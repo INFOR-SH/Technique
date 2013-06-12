@@ -12,6 +12,7 @@ CSqlDeclaration::CSqlDeclaration(const CSqlDeclaration& oThat)
     ,m_sName(oThat.m_sName)
     ,m_sReturnType(oThat.m_sReturnType)
     ,m_stlParameters(oThat.m_stlParameters)
+    ,m_stlParameterIndexs(oThat.m_stlParameterIndexs)
 {
 }
 
@@ -34,7 +35,7 @@ mstring CSqlDeclaration::ReturnType() const
     return m_sReturnType;
 }
 
-map<mstring, CSqlVariable> CSqlDeclaration::Parameters() const
+vector<CSqlVariable> CSqlDeclaration::Parameters() const
 {
     return m_stlParameters;
 }
@@ -49,23 +50,24 @@ void CSqlDeclaration::ReturnType(MSTRING& sReturnType)
     m_sReturnType = sReturnType;
 }
 
-void CSqlDeclaration::Parameters(const map<mstring, CSqlVariable>& stlParameters)
+void CSqlDeclaration::Parameters(const vector<CSqlVariable>& stlParameters)
 {
     m_stlParameters = stlParameters;
 }
 
 void CSqlDeclaration::AddParameter(const CSqlVariable& oParameter)
 {
-    m_stlParameters[oParameter.Name()] = oParameter;
+    m_stlParameters.push_back(oParameter);
+    m_stlParameterIndexs[oParameter.Name()] = m_stlParameters.size() - 1;
 }
 
 CSqlVariable CSqlDeclaration::GetParameter(MSTRING& sName) const
 {
-    auto aParameter = m_stlParameters.find(sName);
+    auto aIndex = m_stlParameterIndexs.find(sName);
 
-    if(aParameter != m_stlParameters.end())
+    if(aIndex != m_stlParameterIndexs.end())
     {
-        return move(CSqlVariable(aParameter->second));
+        return move(CSqlVariable(m_stlParameters[aIndex->second]));
     }
     else
     {
@@ -73,7 +75,7 @@ CSqlVariable CSqlDeclaration::GetParameter(MSTRING& sName) const
     }
 }
 
-map<mstring, CSqlVariable>& CSqlDeclaration::QuoteParameters()
+vector<CSqlVariable>& CSqlDeclaration::QuoteParameters()
 {
     return m_stlParameters;
 }
@@ -90,6 +92,7 @@ const CSqlDeclaration& CSqlDeclaration::operator=(const CSqlDeclaration& oRValue
     m_sName = oRValue.m_sName;
     m_sReturnType = oRValue.m_sReturnType;
     m_stlParameters = oRValue.m_stlParameters;
+    m_stlParameterIndexs = oRValue.m_stlParameterIndexs;
 
     return *this;
 }

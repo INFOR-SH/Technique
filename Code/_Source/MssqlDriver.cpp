@@ -38,14 +38,9 @@ CSqlVariable CMssqlDriver::QueryParameter(MSTRING& sName)
     return m_oSqlFile.QuoteDeclaration().GetParameter(sName);
 }
 
-CSqlDeclaration CMssqlDriver::Declaration() const
+CSqlFile CMssqlDriver::GetSqlFile() const
 {
-    return m_oSqlFile.Declaration();
-}
-
-vector<CSqlProcedure> CMssqlDriver::Procedures() const
-{
-    return m_oSqlFile.Procedures();
+    return m_oSqlFile;
 }
 
 const CMssqlDriver& CMssqlDriver::operator=(const CMssqlDriver& oRValue)

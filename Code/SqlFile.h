@@ -14,6 +14,7 @@ namespace SyteLine { namespace Technique { namespace Code
     protected:
         CSqlDeclaration m_oDeclaration;
         vector<CSqlProcedure> m_stlProcedures;
+        map<mstring, size_t> m_stlProcedureIndexs;
 
     public:
         CSqlFile();
@@ -26,6 +27,7 @@ namespace SyteLine { namespace Technique { namespace Code
         void AddProcedure(const CSqlProcedure& oProcedure); 
         CSqlDeclaration Declaration() const;
         vector<CSqlProcedure> Procedures() const;
+        CSqlProcedure GetProcedure(MSTRING& sName) const;
         CSqlDeclaration& QuoteDeclaration();
         vector<CSqlProcedure>& QuoteProcedures();
 

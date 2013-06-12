@@ -38,38 +38,24 @@ namespace SyteLine { namespace Technique { namespace Code
     class SYTELINE_LIBRARY_EXPORT CMssqlScanner : public CMssqlScannerFlexLexer
     {
     public:
-        enum EMatched
-        {
-            E_MATCHED_NONE = 0,
-            E_MATCHED_DECLARATION,
-            E_MATCHED_PARAMETER_NAME,
-            E_MATCHED_PARAMETER_TYPE,
-            E_MATCHED_PARAMETER_VALUE,
-
-            E_MATCHED_PROCEDURE,
-            E_MATCHED_ARGUMENT_SWAP,
-            E_MATCHED_ARGUMENT_VALUE
-        };
-
         enum EStage
         {
             E_STAGE_BODY,
             E_STAGE_PRCEDURE_DECLARATION,
-            E_STAGE_FUNCTION_DECLARATION,
-            E_STAGE_PROCEDURE,
-            E_STAGE_DECLARE
-            
+            E_STAGE_FUNCTION_DECLARATION
         };
 
     protected:
         EStage m_eStage;
-        EMatched m_eMatched;
-        vector<mstring> m_stlLeftBraces;
 
         CSqlDeclaration m_oDeclaration;
         CSqlProcedure m_oProcedure;
         CSqlVariable m_oVariable;
         CSqlArgument m_oArgument;
+
+        size_t m_nStartingCommentLine;
+        size_t m_nEndingCommentLine;
+        int m_nLastStatus;
 
     public:
         /** Create a new scanner object. The streams arg_yyin and arg_yyout default
@@ -85,8 +71,6 @@ namespace SyteLine { namespace Technique { namespace Code
         * calls this virtual function to fetch new tokens. */
         virtual int Flex(CMssqlDriver& oDriver);
 
-    public:
-        bool InDeclaration();
     };
 }}}
 

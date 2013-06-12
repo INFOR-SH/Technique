@@ -13,8 +13,9 @@ namespace SyteLine { namespace Technique { namespace Code
     {
     protected:
         mstring m_sName;
-        mstring m_sReturnValue;
+        mstring m_sReturnVariableName;
         vector<CSqlArgument> m_stlArguments;
+        map<string, size_t> m_stlArgumentIndexs;
 
     public:
         CSqlProcedure();
@@ -24,11 +25,15 @@ namespace SyteLine { namespace Technique { namespace Code
 
     public:
         mstring Name() const;
-        mstring ReturnValue() const;
+        mstring ReturnVariableName() const;
+
         void Name(MSTRING& sName);
-        void ReturnValue(MSTRING& sReturnValue);
+        void ReturnVariableName(MSTRING& sReturnVariableName);
+
         void AppendArgument(const CSqlArgument& oArgument);
+        CSqlArgument GetArgument(MSTRING& sName) const;
         vector<CSqlArgument>& QuoteArguments();
+
     public:
         virtual void Clear();
 

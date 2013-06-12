@@ -14,7 +14,8 @@ namespace SyteLine { namespace Technique { namespace Code
     protected:
         mstring m_sName;
         mstring m_sReturnType;
-        map<mstring, CSqlVariable> m_stlParameters;
+        vector<CSqlVariable> m_stlParameters;
+        map<mstring, size_t> m_stlParameterIndexs;
 
     public:
         CSqlDeclaration();
@@ -25,14 +26,14 @@ namespace SyteLine { namespace Technique { namespace Code
     public:
         mstring Name() const;
         mstring ReturnType() const;
-        map<mstring, CSqlVariable> Parameters() const;
+        vector<CSqlVariable> Parameters() const;
 
         void Name(MSTRING& sName);
         void ReturnType(MSTRING& sReturnType);
-        void Parameters(const map<mstring, CSqlVariable>& stlParameters);
+        void Parameters(const vector<CSqlVariable>& stlParameters);
         void AddParameter(const CSqlVariable& oParameter);
         CSqlVariable GetParameter(MSTRING& sName) const;
-        map<mstring, CSqlVariable>& QuoteParameters();
+        vector<CSqlVariable>& QuoteParameters();
         mstring ToString(size_t nTabSize = 3);
 
     public:

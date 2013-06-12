@@ -30,8 +30,7 @@ namespace SyteLine { namespace Technique { namespace Code
         virtual CSqlVariable QueryParameter(MSTRING& sName);
 
     public:
-        CSqlDeclaration Declaration() const;
-        vector<CSqlProcedure> Procedures() const;
+        CSqlFile GetSqlFile() const;
 
     public:
         virtual const CMssqlDriver& operator=(const CMssqlDriver& oRValue);

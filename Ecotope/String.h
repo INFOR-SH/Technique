@@ -14,8 +14,12 @@ namespace SyteLine { namespace Technique
     {
         static const size_t N_BUFFER_SIZE = 255;
 
-        inline static wstring ToWideString(const string& msInput, bool bAppended = false);
-        inline static string ToMultipleString(wstring& wsInput, bool bAppended = false);
+        inline static wstring ToWideString(MSTRING& sInput, bool bAppended = false);
+        inline static string ToMultipleString(WSTRING& sInput, bool bAppended = false);
+        inline static string TrimLeftBlank(MSTRING& sInput);
+        inline static string TrimRightBlank(MSTRING& sInput);
+        inline static string TrimBlank(MSTRING& sInput);
+        inline static vector<string> Split(MSTRING& sInput, char cSeparator);
     };
 }}
 
