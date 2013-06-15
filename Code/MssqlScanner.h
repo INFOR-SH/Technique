@@ -1,9 +1,6 @@
 #ifndef SYTELINE_TECHNIQUE_CODE_MSSQLSCANNER_H
 #define SYTELINE_TECHNIQUE_CODE_MSSQLSCANNER_H
 
-#ifndef SYTELINE_TECHNIQUE_SYSTEM_ECOTOPE_BASE_H
-#include "Technique/Ecotope/Base.h"
-#endif
 #ifndef SYTELINE_TECHNIQUE_CODE_SQLDECLARATION_H
 #include "Technique/Code/SqlDeclaration.h"
 #endif
@@ -15,6 +12,9 @@
 #endif
 #ifndef SYTELINE_TECHNIQUE_CODE_SQLARGUMENT_H
 #include "Technique/Code/SqlArgument.h"
+#endif
+#ifndef SYTELINE_TECHNIQUE_CODE_MSSQLCAPTURER_H
+#include "Technique/Code/MssqlCapturer.h"
 #endif
 
 using namespace SyteLine::Technique::Code;
@@ -33,8 +33,6 @@ using namespace SyteLine::Technique::Code;
 
 namespace SyteLine { namespace Technique { namespace Code 
 {
-    class CMssqlCapturer;
-
     class SYTELINE_LIBRARY_EXPORT CMssqlScanner : public CMssqlScannerFlexLexer
     {
     public:

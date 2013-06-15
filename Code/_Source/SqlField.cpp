@@ -8,34 +8,29 @@ CSqlField::CSqlField()
 {
 }
 
-CSqlField::CSqlField(const CSqlField& oThat)
-    :m_nStartingLine(oThat.m_nStartingLine)
-    ,m_nEndingLine(oThat.m_nEndingLine)
+CSqlField::CSqlField(const CSqlField& that)
+    :m_nStartingLine(that.m_nStartingLine)
+    ,m_nEndingLine(that.m_nEndingLine)
 {
 }
 
-CSqlField::CSqlField(const CSqlField&& oThat)
+CSqlField::CSqlField(const CSqlField&& that)
 {
-    *this = move(oThat);
+    *this = move(that);
 }
 
 CSqlField::~CSqlField()
 {
 }
 
-size_t CSqlField::StartingLine() const
-{
-    return m_nStartingLine;
-}
-
-size_t CSqlField::EndingLine() const
-{
-    return m_nEndingLine;
-}
-
 void CSqlField::StartingLine(size_t nLine)
 {
     m_nStartingLine = nLine;
+}
+
+size_t CSqlField::StartingLine() const
+{
+    return m_nStartingLine;
 }
 
 void CSqlField::EndingLine(size_t nLine)
@@ -44,16 +39,21 @@ void CSqlField::EndingLine(size_t nLine)
 }
 
 
+size_t CSqlField::EndingLine() const
+{
+    return m_nEndingLine;
+}
+
 void CSqlField::Clear()
 {
     m_nStartingLine = 0;
     m_nEndingLine = 0;
 }
 
-const CSqlField& CSqlField::operator=(const CSqlField& oRValue)
+const CSqlField& CSqlField::operator=(const CSqlField& rvalue)
 {
-    m_nStartingLine = oRValue.m_nStartingLine;
-    m_nEndingLine = oRValue.m_nEndingLine;
+    m_nStartingLine = rvalue.m_nStartingLine;
+    m_nEndingLine = rvalue.m_nEndingLine;
 
     return *this;
 }

@@ -7,35 +7,30 @@ CPath::CPath()
 {
 }
 
-CPath::CPath(WSTRING& sPath, WSTRING& sDirectoryCharacter)
+CPath::CPath(WSTRING& sPath)
     :m_sPath(sPath)
-    ,m_sDirectoryCharacter(sDirectoryCharacter)
 {
 }
 
-CPath::CPath(WSTRING& sDirectory, WSTRING& sFileName, WSTRING& sDirectoryCharacter)
+CPath::CPath(WSTRING& sDirectory, WSTRING& sFileName)
     :m_sPath(sDirectory)
-    ,m_sDirectoryCharacter(sDirectoryCharacter)
 {
-    if(sDirectory[sDirectory.length()-1] != sDirectoryCharacter[0])
+    if(sDirectory[sDirectory.length()-1] != L'\\')
     {
-        wstring sDirectoryCharacter;
-
-        m_sPath.append(sDirectory);
+        m_sPath.append(L"\\");
     }
 
     m_sPath.append(sFileName);
 }
 
-CPath::CPath(const CPath& oThat)
-    :m_sPath(oThat.m_sPath)
-    ,m_sDirectoryCharacter(oThat.m_sDirectoryCharacter)
+CPath::CPath(const CPath& that)
+    :m_sPath(that.m_sPath)
 {
 }
 
-CPath::CPath(const CPath&& oThat)
+CPath::CPath(const CPath&& that)
 {
-    *this = move(oThat);
+    *this = move(that);
 }
 
 CPath::~CPath()
@@ -49,44 +44,38 @@ wstring CPath::Path() const
 
 wstring CPath::FileName() const
 {
-    if(m_sDirectoryCharacter[0] == m_sPath[m_sPath.length()-1])
-    {
-        return WS_BLANK;
-    }
-    else
-    {
-        auto aString = CWStringHelper(m_sPath).Split(m_sDirectoryCharacter[0]);
+    //auto aString = CWStringHelper(m_sPath).Split(L'\\');
+    auto aString = UString::Split(m_sPath, L'\\');
 
-        return aString[aString.size()-1];
-    }
+    return aString[aString.size()-1];
 }
 
 wstring CPath::Directory() const
 {
     wstring sDirectory;
 
-    if(m_sDirectoryCharacter[0] == m_sPath[m_sPath.length()-1])
+    if(L'\\' == m_sPath[m_sPath.length()-1])
     {
         return m_sPath;
     }
     else
     {
-        auto aString = CWStringHelper(m_sPath).Split(m_sDirectoryCharacter[0]);
+        //auto aString = CWStringHelper(m_sPath).Split(L'\\');
+        auto aString = UString::Split(m_sPath, L'\\');
 
         for(int i = 0; i <aString.size() - 1; i++)
         {
             sDirectory.append(aString[i]);
-            sDirectory.append(m_sDirectoryCharacter);
+            sDirectory.append(L"\\");
         }
 
         return move(sDirectory);
     }
 }
 
-const CPath& CPath::operator=(const CPath& oRValue)
+const CPath& CPath::operator=(const CPath& rvalue)
 {
-    m_sPath = oRValue.m_sPath;
-    m_sDirectoryCharacter = oRValue.m_sDirectoryCharacter;
+    m_sPath = rvalue.m_sPath;
 
     return *this;
 }

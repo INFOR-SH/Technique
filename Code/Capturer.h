@@ -1,8 +1,8 @@
 #ifndef SYTELINE_TECHNIQUE_CODE_CAPTURER_H
 #define SYTELINE_TECHNIQUE_CODE_CAPTURER_H
 
-#ifndef SYTELINE_TECHNIQUE_SYSTEM_ECOTOPE_BASE_H
-#include "Technique/Ecotope/Base.h"
+#ifndef SYTELINE_TECHNIQUE_SYSTEM_ECOTOPE_USAGE_H
+#include "Technique/Ecotope/Usage.h"
 #endif
 
 namespace SyteLine { namespace Technique { namespace Code
@@ -21,7 +21,7 @@ namespace SyteLine { namespace Technique { namespace Code
         virtual void IncreaseLines(size_t nAmount = 1);
 
     public:
-        virtual const CCapturer& operator=(const CCapturer& oRValue);
+        virtual const CCapturer& operator=(const CCapturer& rvalue);
     };
 }}}
 

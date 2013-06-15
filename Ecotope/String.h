@@ -7,31 +7,23 @@
 
 namespace SyteLine { namespace Technique
 {
-    const static wstring WS_BLANK = L"";
-    const static string MS_BLANK = "";
+    const static wstring S_BLANK = L"";
 
     struct SYTELINE_LIBRARY_EXPORT UString
     {
         static const size_t N_BUFFER_SIZE = 255;
 
         inline static wstring ToWideString(MSTRING& sInput, bool bAppended = false);
-        inline static mstring ToMultipleString(WSTRING& sInput, bool bAppended = false);
-        inline static mstring TrimLeftBlank(MSTRING& sInput);
         inline static wstring TrimLeftBlank(WSTRING& sInput);
-        inline static mstring TrimRightBlank(MSTRING& sInput);
         inline static wstring TrimRightBlank(WSTRING& sInput);
-        inline static mstring TrimBlank(MSTRING& sInput);
         inline static wstring TrimBlank(WSTRING& sInput);
-        inline static vector<mstring> Split(MSTRING& sInput, char tSeparator);
-        inline static vector<wstring> Split(WSTRING& sInput, wchar_t tSeparator);
-        inline static mstring ToLower(MSTRING& sInput);
+        inline static vector<wstring> Split(WSTRING& sInput, wchar_t cSeparator);
         inline static wstring ToLower(WSTRING& sInput);
-        inline static mstring ToUpper(MSTRING& sInput);
         inline static wstring ToUpper(WSTRING& sInput);
     };
 
-    template<typename TChar>
-    class SYTELINE_LIBRARY_EXPORT CStringHelper
+    /*template<typename TChar>
+    class SYTELINE_LIBRARY_EXPORT TStringHelper
     {
     public:
         typedef basic_string<TChar> TString;
@@ -41,23 +33,23 @@ namespace SyteLine { namespace Technique
         TString m_tString;
 
     public:
-        CStringHelper()
+        TStringHelper()
         {
         }
 
-        CStringHelper(TSTRING& tString)
+        TStringHelper(TSTRING& tString)
             :m_tString(tString)
         {
         }
 
-        CStringHelper(const CStringHelper<TChar>& oThat)
-            :m_tString(oThat.m_tString)
+        TStringHelper(const TStringHelper<TChar>& that)
+            :m_tString(that.m_tString)
         {
         }
 
-        CStringHelper(const CStringHelper<TChar>&& oThat)
+        TStringHelper(const TStringHelper<TChar>&& that)
         {
-            *this = move(oThat);
+            *this = move(that);
         }
 
     public:
@@ -110,28 +102,28 @@ namespace SyteLine { namespace Technique
 
         TString TrimBlank() const
         {
-            return CStringHelper(TrimLeftBlank()).TrimRightBlank();
+            return TStringHelper(TrimLeftBlank()).TrimRightBlank();
         }
 
         vector<TString> Split(TChar tSeparator) const
         {
             TString tOpertion(m_tString);
-            vector<TString> stlStrings;
+            vector<TString> gStrings;
             size_t nIndex;
 
             while((nIndex = tOpertion.find(tSeparator)) != -1)
             {
-                stlStrings.push_back(tOpertion.substr(0, nIndex));
+                gStrings.push_back(tOpertion.substr(0, nIndex));
 
                 tOpertion = tOpertion.substr(nIndex+1, tOpertion.length());
             }
 
             if(tOpertion.length() > 0)
             {
-                stlStrings.push_back(tOpertion);
+                gStrings.push_back(tOpertion);
             }
 
-            return move(stlStrings);
+            return move(gStrings);
         }
 
         TString ToLower() const
@@ -153,8 +145,8 @@ namespace SyteLine { namespace Technique
         }
     };
 
-    typedef CStringHelper<char> CMStringHelper;
-    typedef CStringHelper<wchar_t> CWStringHelper;
+    typedef TStringHelper<char> CMStringHelper;
+    typedef TStringHelper<wchar_t> CWStringHelper;*/
 }}
 
 #endif

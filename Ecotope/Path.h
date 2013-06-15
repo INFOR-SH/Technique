@@ -11,14 +11,14 @@ namespace SyteLine { namespace Technique
     {
     private:
         wstring m_sPath;
-        wstring m_sDirectoryCharacter;
 
     public:
         CPath();
-        CPath(WSTRING& sPath, WSTRING& cDirectoryCharacter = L"\\");
-        CPath(WSTRING& sDirectory, WSTRING& sFileName, WSTRING& cDirectoryCharacter = L"\\");
-        CPath(const CPath& oThat);
-        CPath(const CPath&& oThat);
+        CPath(WSTRING& sPath);
+        CPath(WSTRING& sDirectory, WSTRING& sFileName);
+        CPath(const CPath& that);
+        CPath(const CPath&& that);
+
         ~CPath();
 
     public:
@@ -27,7 +27,7 @@ namespace SyteLine { namespace Technique
         wstring Directory() const;
 
     public:
-        const CPath& operator=(const CPath& oRValue);
+        const CPath& operator=(const CPath& rvalue);
     };
 }}
 

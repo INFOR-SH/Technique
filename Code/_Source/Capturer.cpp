@@ -18,10 +18,10 @@ void CCapturer::IncreaseLines(size_t nAmount)
     m_nLines += nAmount;
 }
 
-const CCapturer& CCapturer::operator=(const CCapturer& oRValue)
+const CCapturer& CCapturer::operator=(const CCapturer& rvalue)
 {
-    m_nCharacters = oRValue.m_nCharacters;
-    m_nLines = oRValue.m_nLines;
+    m_nCharacters = rvalue.m_nCharacters;
+    m_nLines = rvalue.m_nLines;
 
     return *this;
 }

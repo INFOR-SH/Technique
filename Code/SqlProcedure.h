@@ -1,8 +1,8 @@
 #ifndef SYTELINE_TECHNIQUE_CODE_SQLPROCEDURE_H
 #define SYTELINE_TECHNIQUE_CODE_SQLPROCEDURE_H
 
-#ifndef SYTELINE_TECHNIQUE_SYSTEM_ECOTOPE_ARRAY_H
-#include "Technique/Ecotope/Array.h"
+#ifndef SYTELINE_TECHNIQUE_CODE_SQLFIELD_H
+#include "Technique/Code/SqlField.h"
 #endif
 #ifndef SYTELINE_TECHNIQUE_CODE_SQLARGUMENT_H
 #include "Technique/Code/SqlArgument.h"
@@ -13,32 +13,32 @@ namespace SyteLine { namespace Technique { namespace Code
     class SYTELINE_LIBRARY_EXPORT CSqlProcedure : public CSqlField
     {
     protected:
-        mstring m_sName;
-        mstring m_sReturnVariableName;
-        CArray<mstring, CSqlArgument> m_oArguments;
+        wstring m_sName;
+        wstring m_sReturnVariableName;
+        TCollection<wstring, CSqlArgument> m_oArguments;
 
     public:
         CSqlProcedure();
-        CSqlProcedure(const CSqlProcedure& oThat);
-        CSqlProcedure(const CSqlProcedure&& oThat);
+        CSqlProcedure(const CSqlProcedure& that);
+        CSqlProcedure(const CSqlProcedure&& that);
         virtual ~CSqlProcedure();
 
     public:
-        mstring Name() const;
-        mstring ReturnVariableName() const;
-
-        void Name(MSTRING& sName);
-        void ReturnVariableName(MSTRING& sReturnVariableName);
-
+        void Name(WSTRING& sName);
+        wstring Name() const;
+        void ReturnVariableName(WSTRING& sReturnVariableName);
+        wstring ReturnVariableName() const;
+    public:
         void AppendArgument(const CSqlArgument& oArgument);
-        CSqlArgument QueryArgument(MSTRING& sName) const;
-        CArray<mstring, CSqlArgument>& QuoteArguments();
-
+        TQueried<CSqlArgument> QueryArgument(WSTRING& sName) const;
     public:
         virtual void Clear();
 
     public:
-        virtual const CSqlProcedure& operator=(const CSqlProcedure& oRValue);
+        TCollection<wstring, CSqlArgument>& QuoteArguments();
+
+    public:
+        virtual const CSqlProcedure& operator=(const CSqlProcedure& rvalue);
     };
 }}}
 

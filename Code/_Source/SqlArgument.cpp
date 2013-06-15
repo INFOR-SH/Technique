@@ -1,5 +1,4 @@
 #include "../SqlArgument.h"
-#include "Technique/Ecotope/String.h"
 
 using namespace SyteLine::Technique::Code;
 
@@ -8,46 +7,41 @@ CSqlArgument::CSqlArgument()
 {
 }
 
-CSqlArgument::CSqlArgument(const CSqlArgument& oThat)
-    :CSqlField(oThat)
-    ,m_sLeftValue(oThat.m_sLeftValue)
-    ,m_sRightValue(oThat.m_sRightValue)
-    ,m_bOutput(oThat.m_bOutput)
+CSqlArgument::CSqlArgument(const CSqlArgument& that)
+    :CSqlField(that)
+    ,m_sLeftValue(that.m_sLeftValue)
+    ,m_sRightValue(that.m_sRightValue)
+    ,m_bOutput(that.m_bOutput)
 {
 }
 
-CSqlArgument::CSqlArgument(const CSqlArgument&& oThat)
+CSqlArgument::CSqlArgument(const CSqlArgument&& that)
 {
-    *this = move(oThat);
+    *this = move(that);
 }
 
 CSqlArgument::~CSqlArgument()
 {
 }
 
-mstring CSqlArgument::LeftValue() const
-{
-    return m_sLeftValue;
-}
-
-mstring CSqlArgument::RightValue() const
-{
-    return m_sRightValue;
-}
-
-bool CSqlArgument::Output() const
-{
-    return m_bOutput;
-}
-
-void CSqlArgument::LeftValue(MSTRING& sValue)
+void CSqlArgument::LeftValue(WSTRING& sValue)
 {
     m_sLeftValue = sValue;
 }
 
-void CSqlArgument::RightValue(MSTRING& sValue)
+wstring CSqlArgument::LeftValue() const
+{
+    return m_sLeftValue;
+}
+
+void CSqlArgument::RightValue(WSTRING& sValue)
 {
     m_sRightValue = sValue;
+}
+
+wstring CSqlArgument::RightValue() const
+{
+    return m_sRightValue;
 }
 
 void CSqlArgument::Output(bool bOutput)
@@ -55,22 +49,27 @@ void CSqlArgument::Output(bool bOutput)
     m_bOutput = bOutput;
 }
 
+bool CSqlArgument::Output() const
+{
+    return m_bOutput;
+}
+
 void CSqlArgument::Clear()
 {
     CSqlField::Clear();
 
-    m_sLeftValue = MS_BLANK;
-    m_sRightValue = MS_BLANK;
+    m_sLeftValue = S_BLANK;
+    m_sRightValue = S_BLANK;
     m_bOutput = false;
 }
 
-const CSqlArgument& CSqlArgument::operator=(const CSqlArgument& oRValue)
+const CSqlArgument& CSqlArgument::operator=(const CSqlArgument& rvalue)
 {
-    CSqlField::operator=(oRValue);
+    CSqlField::operator=(rvalue);
 
-    m_sLeftValue = oRValue.m_sLeftValue;
-    m_sRightValue = oRValue.m_sRightValue;
-    m_bOutput = oRValue.m_bOutput;
+    m_sLeftValue = rvalue.m_sLeftValue;
+    m_sRightValue = rvalue.m_sRightValue;
+    m_bOutput = rvalue.m_bOutput;
 
     return *this;
 }

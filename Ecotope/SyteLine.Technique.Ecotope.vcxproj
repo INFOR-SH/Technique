@@ -11,8 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Array.h" />
+    <ClInclude Include="Collection.h" />
     <ClInclude Include="Base.h" />
+    <ClInclude Include="Usage.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="String.h" />
   </ItemGroup>

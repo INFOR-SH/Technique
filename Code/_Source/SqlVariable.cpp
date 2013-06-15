@@ -1,5 +1,4 @@
 #include "../SqlVariable.h"
-#include "Technique/Ecotope/String.h"
 
 using namespace SyteLine::Technique::Code;
 
@@ -8,57 +7,52 @@ CSqlVariable::CSqlVariable()
 {
 }
 
-CSqlVariable::CSqlVariable(const CSqlVariable& oThat)
-    :CSqlField(oThat)
-    ,m_sName(oThat.m_sName)
-    ,m_sType(oThat.m_sType)
-    ,m_sValue(oThat.m_sValue)
-    ,m_bOutput(oThat.m_bOutput)
+CSqlVariable::CSqlVariable(const CSqlVariable& that)
+    :CSqlField(that)
+    ,m_sName(that.m_sName)
+    ,m_sType(that.m_sType)
+    ,m_sValue(that.m_sValue)
+    ,m_bOutput(that.m_bOutput)
 {
 }
 
-CSqlVariable::CSqlVariable(const CSqlVariable&& oThat)
+CSqlVariable::CSqlVariable(const CSqlVariable&& that)
 {
-    *this = move(oThat);
+    *this = move(that);
 }
 
 CSqlVariable::~CSqlVariable()
 {
 }
 
-mstring CSqlVariable::Name() const
-{
-    return m_sName;
-}
-
-mstring CSqlVariable::Type() const
-{
-    return m_sType;
-}
-
-mstring CSqlVariable::Value() const
-{
-    return  m_sValue;
-}
-
-bool CSqlVariable::Output() const
-{
-    return m_bOutput;
-}
-
-void CSqlVariable::Name(MSTRING& sName)
+void CSqlVariable::Name(WSTRING& sName)
 {
     m_sName = sName;
 }
 
-void CSqlVariable::Type(MSTRING& sType)
+wstring CSqlVariable::Name() const
+{
+    return m_sName;
+}
+
+void CSqlVariable::Type(WSTRING& sType)
 {
     m_sType = sType;
 }
 
-void CSqlVariable::Value(MSTRING& sValue)
+wstring CSqlVariable::Type() const
+{
+    return m_sType;
+}
+
+void CSqlVariable::Value(WSTRING& sValue)
 {
     m_sValue = sValue;
+}
+
+wstring CSqlVariable::Value() const
+{
+    return  m_sValue;
 }
 
 void CSqlVariable::Output(bool bOutput)
@@ -66,24 +60,29 @@ void CSqlVariable::Output(bool bOutput)
     m_bOutput = bOutput;
 }
 
+bool CSqlVariable::Output() const
+{
+    return m_bOutput;
+}
+
 void CSqlVariable::Clear()
 {
     CSqlField::Clear();
 
-    m_sName = MS_BLANK;
-    m_sType = MS_BLANK;
-    m_sValue = MS_BLANK;
+    m_sName = S_BLANK;
+    m_sType = S_BLANK;
+    m_sValue = S_BLANK;
     m_bOutput = false;
 }
 
-const CSqlVariable& CSqlVariable::operator=(const CSqlVariable& oRValue)
+const CSqlVariable& CSqlVariable::operator=(const CSqlVariable& rvalue)
 {
-    CSqlField::operator=(oRValue);
+    CSqlField::operator=(rvalue);
 
-    m_sName = oRValue.m_sName;
-    m_sType = oRValue.m_sType;
-    m_sValue = oRValue.m_sValue;
-    m_bOutput = oRValue.m_bOutput;
+    m_sName = rvalue.m_sName;
+    m_sType = rvalue.m_sType;
+    m_sValue = rvalue.m_sValue;
+    m_bOutput = rvalue.m_bOutput;
 
     return *this;
 }

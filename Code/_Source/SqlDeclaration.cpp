@@ -1,5 +1,4 @@
 #include "../SqlDeclaration.h"
-#include "Technique/Ecotope/String.h"
 
 using namespace SyteLine::Technique;
 using namespace SyteLine::Technique::Code;
@@ -8,51 +7,51 @@ CSqlDeclaration::CSqlDeclaration()
 {
 }
 
-CSqlDeclaration::CSqlDeclaration(const CSqlDeclaration& oThat)
-    :CSqlField(oThat)
-    ,m_sName(oThat.m_sName)
-    ,m_sReturnType(oThat.m_sReturnType)
-    ,m_oParameters(oThat.m_oParameters)
+CSqlDeclaration::CSqlDeclaration(const CSqlDeclaration& that)
+    :CSqlField(that)
+    ,m_sName(that.m_sName)
+    ,m_sReturnType(that.m_sReturnType)
+    ,m_oParameters(that.m_oParameters)
 {
 }
 
-CSqlDeclaration::CSqlDeclaration(const CSqlDeclaration&& oThat)
+CSqlDeclaration::CSqlDeclaration(const CSqlDeclaration&& that)
 {
-    *this = move(oThat);
+    *this = move(that);
 }
 
 CSqlDeclaration::~CSqlDeclaration()
 {
 }
 
-mstring CSqlDeclaration::Name() const
-{
-    return m_sName;
-}
-
-mstring CSqlDeclaration::ReturnType() const
-{
-    return m_sReturnType;
-}
-
-CArray<mstring, CSqlVariable> CSqlDeclaration::Parameters() const
-{
-    return m_oParameters;
-}
-
-void CSqlDeclaration::Name(MSTRING& sName)
+void CSqlDeclaration::Name(WSTRING& sName)
 {
     m_sName = sName;
 }
 
-void CSqlDeclaration::ReturnType(MSTRING& sReturnType)
+wstring CSqlDeclaration::Name() const
+{
+    return m_sName;
+}
+
+void CSqlDeclaration::ReturnType(WSTRING& sReturnType)
 {
     m_sReturnType = sReturnType;
 }
 
-void CSqlDeclaration::Parameters(const CArray<mstring, CSqlVariable>& oParameters)
+wstring CSqlDeclaration::ReturnType() const
+{
+    return m_sReturnType;
+}
+
+void CSqlDeclaration::Parameters(const TCollection<wstring, CSqlVariable>& oParameters)
 {
     m_oParameters = oParameters;
+}
+
+TCollection<wstring, CSqlVariable> CSqlDeclaration::Parameters() const
+{
+    return m_oParameters;
 }
 
 void CSqlDeclaration::AppendParameter(const CSqlVariable& oParameter)
@@ -60,28 +59,28 @@ void CSqlDeclaration::AppendParameter(const CSqlVariable& oParameter)
     m_oParameters.Append(UString::ToLower(oParameter.Name()), oParameter);
 }
 
-CSqlVariable CSqlDeclaration::QueryParameter(MSTRING& sName) const
+TQueried<CSqlVariable>  CSqlDeclaration::QueryParameter(WSTRING& sName) const
 {
     return m_oParameters.Query(UString::ToLower(sName));
 }
 
-CArray<mstring, CSqlVariable>& CSqlDeclaration::QuoteParameters()
+wstring CSqlDeclaration::ToString(size_t nTabSize)
+{
+    return L"";
+}
+
+TCollection<wstring, CSqlVariable>& CSqlDeclaration::QuoteParameters()
 {
     return m_oParameters;
 }
 
-mstring CSqlDeclaration::ToString(size_t nTabSize)
+const CSqlDeclaration& CSqlDeclaration::operator=(const CSqlDeclaration& rvalue)
 {
-    return "";
-}
+    CSqlField::operator=(rvalue);
 
-const CSqlDeclaration& CSqlDeclaration::operator=(const CSqlDeclaration& oRValue)
-{
-    CSqlField::operator=(oRValue);
-
-    m_sName = oRValue.m_sName;
-    m_sReturnType = oRValue.m_sReturnType;
-    m_oParameters = oRValue.m_oParameters;
+    m_sName = rvalue.m_sName;
+    m_sReturnType = rvalue.m_sReturnType;
+    m_oParameters = rvalue.m_oParameters;
 
     return *this;
 }

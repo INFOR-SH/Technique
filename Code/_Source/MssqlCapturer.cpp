@@ -1,17 +1,15 @@
 #include "../MssqlCapturer.h"
-#include "../SqlVariable.h"
-#include "../SqlDeclaration.h"
-#include "../SqlProcedure.h"
 
+using namespace SyteLine::Technique;
 using namespace SyteLine::Technique::Code;
 
 CMssqlCapturer::CMssqlCapturer()
 {
 }
 
-CMssqlCapturer::CMssqlCapturer(const CMssqlCapturer& oThat)
-    :CCapturer(oThat)
-    ,m_oSqlFile(oThat.m_oSqlFile)
+CMssqlCapturer::CMssqlCapturer(const CMssqlCapturer& that)
+    :CCapturer(that)
+    ,m_oSqlFile(that.m_oSqlFile)
 {
 }
 
@@ -33,26 +31,26 @@ void CMssqlCapturer::CaptureProcedure(const CSqlProcedure& oProcedure)
     m_oSqlFile.AppendProcedure(oProcedure);
 }
 
-CSqlVariable CMssqlCapturer::QueryParameter(MSTRING& sName) const
+TQueried<CSqlVariable> CMssqlCapturer::QueryParameter(WSTRING& sName) const
 {
     return m_oSqlFile.QueryParameter(sName);
 }
 
-CSqlProcedure CMssqlCapturer::QueryProcedure(MSTRING& sName) const
+TQueried<CSqlProcedure> CMssqlCapturer::QueryProcedure(WSTRING& sName) const
 {
     return m_oSqlFile.QueryProcedure(sName);
 }
 
-CSqlFile CMssqlCapturer::GetSqlFile() const
+const CSqlFile& CMssqlCapturer::QuoteSqlFile() const
 {
     return m_oSqlFile;
 }
 
-const CMssqlCapturer& CMssqlCapturer::operator=(const CMssqlCapturer& oRValue)
+const CMssqlCapturer& CMssqlCapturer::operator=(const CMssqlCapturer& rvalue)
 {
-    CCapturer::operator=(oRValue);
+    CCapturer::operator=(rvalue);
     
-    m_oSqlFile = oRValue.m_oSqlFile;
+    m_oSqlFile = rvalue.m_oSqlFile;
 
     return *this;
 }

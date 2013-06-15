@@ -10,29 +10,29 @@ namespace SyteLine { namespace Technique { namespace Code
     class SYTELINE_LIBRARY_EXPORT CSqlArgument : public CSqlField
     {
     protected:
-        mstring m_sLeftValue;
-        mstring m_sRightValue;
+        wstring m_sLeftValue;
+        wstring m_sRightValue;
         bool m_bOutput;
 
     public:
         CSqlArgument();
-        CSqlArgument(const CSqlArgument& oThat);
-        CSqlArgument(const CSqlArgument&& oThat);
+        CSqlArgument(const CSqlArgument& that);
+        CSqlArgument(const CSqlArgument&& that);
         virtual ~CSqlArgument();
 
     public:
-        mstring LeftValue() const;
-        mstring RightValue() const;
-        bool Output() const;
-        void LeftValue(MSTRING& sValue);
-        void RightValue(MSTRING& sValue);
+        void LeftValue(WSTRING& sValue);
+        wstring LeftValue() const;
+        void RightValue(WSTRING& sValue);
+        wstring RightValue() const;
         void Output(bool bOutput);
+        bool Output() const;
 
     public:
         virtual void Clear();
 
     public:
-        const CSqlArgument& operator=(const CSqlArgument& oRValue);
+        const CSqlArgument& operator=(const CSqlArgument& rvalue);
     };
 }}}
 

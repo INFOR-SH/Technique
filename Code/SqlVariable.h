@@ -10,31 +10,31 @@ namespace SyteLine { namespace Technique { namespace Code
     class SYTELINE_LIBRARY_EXPORT CSqlVariable : public CSqlField
     {
     protected:
-        mstring m_sName;
-        mstring m_sType;
-        mstring m_sValue;
+        wstring m_sName;
+        wstring m_sType;
+        wstring m_sValue;
         bool m_bOutput;
 
     public:
         CSqlVariable();
-        CSqlVariable(const CSqlVariable& oThat);
-        CSqlVariable(const CSqlVariable&& oThat);
+        CSqlVariable(const CSqlVariable& that);
+        CSqlVariable(const CSqlVariable&& that);
         virtual ~CSqlVariable();
 
     public:
-        mstring Name() const;
-        mstring Type() const;
-        mstring Value() const;
-        bool Output() const;
-        void Name(MSTRING& sName);
-        void Type(MSTRING& sType);
-        void Value(MSTRING& sValue);
+        void Name(WSTRING& sName);
+        wstring Name() const;
+        void Type(WSTRING& sType);
+        wstring Type() const;
+        void Value(WSTRING& sValue);
+        wstring Value() const;
         void Output(bool bOutput);
+        bool Output() const;
     public:
         virtual void Clear();
 
     public:
-        virtual const CSqlVariable& operator=(const CSqlVariable& oRValue);
+        virtual const CSqlVariable& operator=(const CSqlVariable& rvalue);
     };
 }}}
 

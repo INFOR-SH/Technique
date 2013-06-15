@@ -1,8 +1,5 @@
 %{
-#include "../MssqlCapturer.h"
 #include "../MssqlScanner.h"
-#include "../SqlVariable.h"
-#include "Technique/Ecotope/String.h"
 
 using namespace std;
 using namespace SyteLine::Technique;
@@ -75,7 +72,7 @@ RVariableValue  "NULL"|"@"[_a-zA-Z0-9]+|"N"?\'{1}.*\'{1}|[0-9\.]+
 }
 
 <M_PROCEDURE_DECLARATION>{RMethodName} {
-    m_oDeclaration.Name(yytext);
+    m_oDeclaration.Name(UString::ToWideString(yytext));
 }
 
 <M_PROCEDURE_DECLARATION>"(" {
@@ -115,28 +112,25 @@ RVariableValue  "NULL"|"@"[_a-zA-Z0-9]+|"N"?\'{1}.*\'{1}|[0-9\.]+
 
 <M_DECLARE_VARIABLES>{RVariableName} {
     m_oVariable.StartingLine(yylineno);
-    m_oVariable.Name(yytext);
+    m_oVariable.Name(UString::ToWideString(yytext));
     m_oVariable.EndingLine(yylineno);
 }
 
 <M_DECLARE_VARIABLES>{RVariableType}|({RVariableType}{ROperatorBlank}"("{ROperatorBlank}{RVariableSubtype}{ROperatorBlank}")") {
-    string sType;
-    //auto aStrings = UString::Split(yytext, '(');
-    auto aStrings = CMStringHelper(yytext).Split('(');
+    wstring sType;
+    vector<wstring> gStrings = UString::Split(UString::ToWideString(yytext), L'(');
 
-    if(aStrings.size() == 1)
+    if(gStrings.size() == 1)
     {
-        sType = yytext;
+        sType = UString::ToWideString(yytext);
     }
     else
     {
-        //sType = UString::TrimBlank(aStrings[0]);
-        sType = CMStringHelper(aStrings[0]).TrimBlank();
+        sType = UString::TrimBlank(gStrings[0]);
         
-        sType.append("(");
-        //sType.append(UString::TrimBlank(aStrings[1].substr(0, aStrings[1].length()-1)));
-        sType.append(CMStringHelper(aStrings[1].substr(0, aStrings[1].length()-1)).TrimBlank());
-        sType.append(")");
+        sType.append(L"(");
+        sType.append(UString::TrimBlank(gStrings[1].substr(0, gStrings[1].length()-1)));
+        sType.append(L")");
     }
 
     m_oVariable.Type(sType);
@@ -144,11 +138,10 @@ RVariableValue  "NULL"|"@"[_a-zA-Z0-9]+|"N"?\'{1}.*\'{1}|[0-9\.]+
 }
 
 <M_DECLARE_VARIABLES>"="{ROperatorBlank}{RVariableValue} {
-    string sValue(yytext);
+    wstring sValue(UString::ToWideString(yytext));
     
     sValue = sValue.substr(1);
-    //m_oVariable.Value(UString::TrimBlank(sValue));
-    m_oVariable.Value(CMStringHelper(sValue).TrimBlank());
+    m_oVariable.Value(UString::TrimBlank(sValue));
     m_oVariable.EndingLine(yylineno);
 }
 
@@ -184,20 +177,16 @@ RVariableValue  "NULL"|"@"[_a-zA-Z0-9]+|"N"?\'{1}.*\'{1}|[0-9\.]+
 }
 
 <M_PROCEDURE>({RMethodName})|({RVariableName})|({RVariableName}{ROperatorBlank}"="{1}{ROperatorBlank}({RVariableName}|{RString})) {
-    //auto aStrings = UString::Split(yytext, '=');
-    auto aStrings = CMStringHelper(yytext).Split('=');
+    vector<wstring> gStrings = UString::Split(UString::ToWideString(yytext), L'=');
 
-    if(aStrings.size() == 1)
+    if(gStrings.size() == 1)
     {
-        //m_oProcedure.Name(UString::TrimBlank(yytext));
-        m_oProcedure.Name(CMStringHelper(yytext).TrimBlank());
+        m_oProcedure.Name(UString::TrimBlank(UString::ToWideString(yytext)));
     }
     else
     {
-        //m_oProcedure.Name(UString::TrimBlank(aStrings[1]));
-        m_oProcedure.Name(CMStringHelper(aStrings[1]).TrimBlank());
-        //m_oProcedure.ReturnVariableName(UString::TrimBlank(aStrings[0]));
-        m_oProcedure.ReturnVariableName(CMStringHelper(aStrings[0]).TrimBlank());
+        m_oProcedure.Name(UString::TrimBlank(gStrings[1]));
+        m_oProcedure.ReturnVariableName(UString::TrimBlank(gStrings[0]));
     }
 
     BEGIN M_ARGUMENTS;
@@ -221,20 +210,16 @@ RVariableValue  "NULL"|"@"[_a-zA-Z0-9]+|"N"?\'{1}.*\'{1}|[0-9\.]+
     m_oArgument.StartingLine(yylineno);
     m_oArgument.EndingLine(yylineno);
 
-    //auto aStrings = UString::Split(yytext, '=');
-    auto aStrings = CMStringHelper(yytext).Split('=');
+    vector<wstring> gStrings = UString::Split(UString::ToWideString(yytext), L'=');
 
-    if(aStrings.size() == 1)
+    if(gStrings.size() == 1)
     {
-        //m_oArgument.RightValue(UString::TrimBlank(aStrings[0]));
-        m_oArgument.RightValue(CMStringHelper(aStrings[0]).TrimBlank());
+        m_oArgument.RightValue(UString::TrimBlank(gStrings[0]));
     }
     else
     {
-        //m_oArgument.LeftValue(UString::TrimBlank(aStrings[0]));
-        m_oArgument.LeftValue(CMStringHelper(aStrings[0]).TrimBlank());
-        //m_oArgument.RightValue(UString::TrimBlank(aStrings[1]));
-        m_oArgument.RightValue(CMStringHelper(aStrings[1]).TrimBlank());
+        m_oArgument.LeftValue(UString::TrimBlank(gStrings[0]));
+        m_oArgument.RightValue(UString::TrimBlank(gStrings[1]));
     }
 }
 

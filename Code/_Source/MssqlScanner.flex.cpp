@@ -875,9 +875,9 @@ static yyconst short int yy_chk[1195] =
 
 static yyconst short int yy_rule_linenum[29] =
     {   0,
-       44,   50,   56,   63,   70,   77,   81,   85,   89,  102,
-      109,  116,  122,  146,  155,  160,  165,  176,  180,  186,
-      206,  213,  220,  241,  247,  252,  272,  276
+       41,   47,   53,   60,   67,   74,   78,   82,   86,   99,
+      106,  113,  119,  140,  148,  153,  158,  169,  173,  179,
+      195,  202,  209,  226,  232,  237,  257,  261
     } ;
 
 #define YY_TRAILING_MASK 0x2000
@@ -898,10 +898,7 @@ goto find_rule; \
 #line 1 "MssqlScanner.flex"
 #define INITIAL 0
 #line 2 "MssqlScanner.flex"
-#include "../MssqlCapturer.h"
 #include "../MssqlScanner.h"
-#include "../SqlVariable.h"
-#include "Technique/Ecotope/String.h"
 
 using namespace std;
 using namespace SyteLine::Technique;
@@ -924,7 +921,7 @@ using namespace SyteLine::Technique::Code;
 
 #define M_ARGUMENTS 9
 
-#line 927 "MssqlScanner.flex.out"
+#line 924 "MssqlScanner.flex.out"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -1051,10 +1048,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 42 "MssqlScanner.flex"
+#line 39 "MssqlScanner.flex"
 
 
-#line 1057 "MssqlScanner.flex.out"
+#line 1054 "MssqlScanner.flex.out"
 
 	if ( yy_init )
 		{
@@ -1184,7 +1181,7 @@ do_action:	/* This label is used only to access EOF actions. */
 	{ /* beginning of action switch */
 case 1:
 YY_RULE_SETUP
-#line 44 "MssqlScanner.flex"
+#line 41 "MssqlScanner.flex"
 {
     m_nEndingCommentLine = yylineno;
 
@@ -1193,7 +1190,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 50 "MssqlScanner.flex"
+#line 47 "MssqlScanner.flex"
 {
     m_nEndingCommentLine = yylineno;
 
@@ -1202,7 +1199,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 56 "MssqlScanner.flex"
+#line 53 "MssqlScanner.flex"
 {
     m_oDeclaration.StartingLine(yylineno);
     m_eStage = E_STAGE_PRCEDURE_DECLARATION;
@@ -1212,7 +1209,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 63 "MssqlScanner.flex"
+#line 60 "MssqlScanner.flex"
 {
     m_nLastStatus = M_PROCEDURE_DECLARATION;
     m_nStartingCommentLine = yylineno;
@@ -1222,7 +1219,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 70 "MssqlScanner.flex"
+#line 67 "MssqlScanner.flex"
 {
     m_nLastStatus = M_PROCEDURE_DECLARATION;
     m_nStartingCommentLine = yylineno;
@@ -1232,28 +1229,28 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 77 "MssqlScanner.flex"
+#line 74 "MssqlScanner.flex"
 {
-    m_oDeclaration.Name(yytext);
+    m_oDeclaration.Name(UString::ToWideString(yytext));
 }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 81 "MssqlScanner.flex"
+#line 78 "MssqlScanner.flex"
 {
     BEGIN M_DECLARE_VARIABLES;
 }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 85 "MssqlScanner.flex"
+#line 82 "MssqlScanner.flex"
 {
     ;
 }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 89 "MssqlScanner.flex"
+#line 86 "MssqlScanner.flex"
 {
     m_oDeclaration.AppendParameter(m_oVariable);
     m_oDeclaration.EndingLine(yylineno);
@@ -1269,7 +1266,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 102 "MssqlScanner.flex"
+#line 99 "MssqlScanner.flex"
 {
     m_nLastStatus = M_DECLARE_VARIABLES;
     m_nStartingCommentLine = yylineno;
@@ -1279,7 +1276,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 109 "MssqlScanner.flex"
+#line 106 "MssqlScanner.flex"
 {
     m_nLastStatus = M_DECLARE_VARIABLES;
     m_nStartingCommentLine = yylineno;
@@ -1289,34 +1286,31 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 116 "MssqlScanner.flex"
+#line 113 "MssqlScanner.flex"
 {
     m_oVariable.StartingLine(yylineno);
-    m_oVariable.Name(yytext);
+    m_oVariable.Name(UString::ToWideString(yytext));
     m_oVariable.EndingLine(yylineno);
 }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 122 "MssqlScanner.flex"
+#line 119 "MssqlScanner.flex"
 {
-    string sType;
-    //auto aStrings = UString::Split(yytext, '(');
-    auto aStrings = CMStringHelper(yytext).Split('(');
+    wstring sType;
+    vector<wstring> gStrings = UString::Split(UString::ToWideString(yytext), L'(');
 
-    if(aStrings.size() == 1)
+    if(gStrings.size() == 1)
     {
-        sType = yytext;
+        sType = UString::ToWideString(yytext);
     }
     else
     {
-        //sType = UString::TrimBlank(aStrings[0]);
-        sType = CMStringHelper(aStrings[0]).TrimBlank();
+        sType = UString::TrimBlank(gStrings[0]);
         
-        sType.append("(");
-        //sType.append(UString::TrimBlank(aStrings[1].substr(0, aStrings[1].length()-1)));
-        sType.append(CMStringHelper(aStrings[1].substr(0, aStrings[1].length()-1)).TrimBlank());
-        sType.append(")");
+        sType.append(L"(");
+        sType.append(UString::TrimBlank(gStrings[1].substr(0, gStrings[1].length()-1)));
+        sType.append(L")");
     }
 
     m_oVariable.Type(sType);
@@ -1325,19 +1319,18 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 146 "MssqlScanner.flex"
+#line 140 "MssqlScanner.flex"
 {
-    string sValue(yytext);
+    wstring sValue(UString::ToWideString(yytext));
     
     sValue = sValue.substr(1);
-    //m_oVariable.Value(UString::TrimBlank(sValue));
-    m_oVariable.Value(CMStringHelper(sValue).TrimBlank());
+    m_oVariable.Value(UString::TrimBlank(sValue));
     m_oVariable.EndingLine(yylineno);
 }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 155 "MssqlScanner.flex"
+#line 148 "MssqlScanner.flex"
 {
     m_oVariable.Output(true);
     m_oVariable.EndingLine(yylineno);
@@ -1345,7 +1338,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 160 "MssqlScanner.flex"
+#line 153 "MssqlScanner.flex"
 {
     m_oDeclaration.AppendParameter(m_oVariable);
     m_oVariable.Clear();
@@ -1353,7 +1346,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 165 "MssqlScanner.flex"
+#line 158 "MssqlScanner.flex"
 {
     if(E_STAGE_PRCEDURE_DECLARATION == m_eStage)
     {
@@ -1367,14 +1360,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 176 "MssqlScanner.flex"
+#line 169 "MssqlScanner.flex"
 {
     ;
 }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 180 "MssqlScanner.flex"
+#line 173 "MssqlScanner.flex"
 {
     m_oProcedure.StartingLine(yylineno);
 
@@ -1383,22 +1376,18 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 186 "MssqlScanner.flex"
+#line 179 "MssqlScanner.flex"
 {
-    //auto aStrings = UString::Split(yytext, '=');
-    auto aStrings = CMStringHelper(yytext).Split('=');
+    vector<wstring> gStrings = UString::Split(UString::ToWideString(yytext), L'=');
 
-    if(aStrings.size() == 1)
+    if(gStrings.size() == 1)
     {
-        //m_oProcedure.Name(UString::TrimBlank(yytext));
-        m_oProcedure.Name(CMStringHelper(yytext).TrimBlank());
+        m_oProcedure.Name(UString::TrimBlank(UString::ToWideString(yytext)));
     }
     else
     {
-        //m_oProcedure.Name(UString::TrimBlank(aStrings[1]));
-        m_oProcedure.Name(CMStringHelper(aStrings[1]).TrimBlank());
-        //m_oProcedure.ReturnVariableName(UString::TrimBlank(aStrings[0]));
-        m_oProcedure.ReturnVariableName(CMStringHelper(aStrings[0]).TrimBlank());
+        m_oProcedure.Name(UString::TrimBlank(gStrings[1]));
+        m_oProcedure.ReturnVariableName(UString::TrimBlank(gStrings[0]));
     }
 
     BEGIN M_ARGUMENTS;
@@ -1406,7 +1395,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 206 "MssqlScanner.flex"
+#line 195 "MssqlScanner.flex"
 {
     m_nLastStatus = M_ARGUMENTS;
     m_nStartingCommentLine = yylineno;
@@ -1416,7 +1405,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 213 "MssqlScanner.flex"
+#line 202 "MssqlScanner.flex"
 {
     m_nLastStatus = M_ARGUMENTS;
     m_nStartingCommentLine = yylineno;
@@ -1426,31 +1415,27 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 220 "MssqlScanner.flex"
+#line 209 "MssqlScanner.flex"
 {
     m_oArgument.StartingLine(yylineno);
     m_oArgument.EndingLine(yylineno);
 
-    //auto aStrings = UString::Split(yytext, '=');
-    auto aStrings = CMStringHelper(yytext).Split('=');
+    vector<wstring> gStrings = UString::Split(UString::ToWideString(yytext), L'=');
 
-    if(aStrings.size() == 1)
+    if(gStrings.size() == 1)
     {
-        //m_oArgument.RightValue(UString::TrimBlank(aStrings[0]));
-        m_oArgument.RightValue(CMStringHelper(aStrings[0]).TrimBlank());
+        m_oArgument.RightValue(UString::TrimBlank(gStrings[0]));
     }
     else
     {
-        //m_oArgument.LeftValue(UString::TrimBlank(aStrings[0]));
-        m_oArgument.LeftValue(CMStringHelper(aStrings[0]).TrimBlank());
-        //m_oArgument.RightValue(UString::TrimBlank(aStrings[1]));
-        m_oArgument.RightValue(CMStringHelper(aStrings[1]).TrimBlank());
+        m_oArgument.LeftValue(UString::TrimBlank(gStrings[0]));
+        m_oArgument.RightValue(UString::TrimBlank(gStrings[1]));
     }
 }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 241 "MssqlScanner.flex"
+#line 226 "MssqlScanner.flex"
 {
     m_oProcedure.AppendArgument(m_oArgument);
     m_oProcedure.EndingLine(yylineno);
@@ -1459,7 +1444,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 247 "MssqlScanner.flex"
+#line 232 "MssqlScanner.flex"
 {
     m_oArgument.EndingLine(yylineno);
     m_oArgument.Output(true);
@@ -1467,7 +1452,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 252 "MssqlScanner.flex"
+#line 237 "MssqlScanner.flex"
 {
     m_oProcedure.AppendArgument(m_oArgument);
     
@@ -1490,24 +1475,24 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 272 "MssqlScanner.flex"
+#line 257 "MssqlScanner.flex"
 {
     ;
 }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 276 "MssqlScanner.flex"
+#line 261 "MssqlScanner.flex"
 {
     ;
 }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 279 "MssqlScanner.flex"
+#line 264 "MssqlScanner.flex"
 ECHO;
 	YY_BREAK
-#line 1510 "MssqlScanner.flex.out"
+#line 1495 "MssqlScanner.flex.out"
 			case YY_STATE_EOF(INITIAL):
 			case YY_STATE_EOF(M_COMMENT1):
 			case YY_STATE_EOF(M_COMMENT2):
@@ -2321,7 +2306,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 279 "MssqlScanner.flex"
+#line 264 "MssqlScanner.flex"
 
 
 namespace SyteLine { namespace Technique { namespace Code
