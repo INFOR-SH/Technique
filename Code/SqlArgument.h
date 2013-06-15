@@ -27,6 +27,7 @@ namespace SyteLine { namespace Technique { namespace Code
         void LeftValue(MSTRING& sValue);
         void RightValue(MSTRING& sValue);
         void Output(bool bOutput);
+
     public:
         virtual void Clear();
 

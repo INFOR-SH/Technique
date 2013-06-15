@@ -8,6 +8,8 @@
 #include <map>
 #include <memory>
 #include <windows.h>
+#include <cctype>
+#include <algorithm>
 
 using namespace std;
 

@@ -15,12 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="_Source\FileDriver.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="_Source\MssqlDriver.cpp">
-      <Filter>Sql\Mssql</Filter>
-    </ClCompile>
     <ClCompile Include="_Source\SqlArgument.cpp">
       <Filter>Sql\Structure</Filter>
     </ClCompile>
@@ -42,15 +36,15 @@
     <ClCompile Include="_Source\SqlProcedure.cpp">
       <Filter>Sql\Structure</Filter>
     </ClCompile>
+    <ClCompile Include="_Source\Capturer.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="_Source\MssqlCapturer.cpp">
+      <Filter>Sql\Mssql</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FileDriver.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="MssqlScanner.h">
-      <Filter>Sql\Mssql</Filter>
-    </ClInclude>
-    <ClInclude Include="MssqlDriver.h">
       <Filter>Sql\Mssql</Filter>
     </ClInclude>
     <ClInclude Include="SqlArgument.h">
@@ -70,6 +64,12 @@
     </ClInclude>
     <ClInclude Include="SqlProcedure.h">
       <Filter>Sql\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="Capturer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="MssqlCapturer.h">
+      <Filter>Sql\Mssql</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

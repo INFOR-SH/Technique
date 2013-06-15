@@ -81,8 +81,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="_Source\FileDriver.cpp" />
-    <ClCompile Include="_Source\MssqlDriver.cpp" />
+    <ClCompile Include="_Source\Capturer.cpp" />
+    <ClCompile Include="_Source\MssqlCapturer.cpp" />
     <ClCompile Include="_Source\MssqlScanner.flex.cpp" />
     <ClCompile Include="_Source\SqlArgument.cpp" />
     <ClCompile Include="_Source\SqlProcedure.cpp" />
@@ -92,8 +92,8 @@
     <ClCompile Include="_Source\SqlVariable.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FileDriver.h" />
-    <ClInclude Include="MssqlDriver.h" />
+    <ClInclude Include="Capturer.h" />
+    <ClInclude Include="MssqlCapturer.h" />
     <ClInclude Include="MssqlScanner.h" />
     <ClInclude Include="SqlArgument.h" />
     <ClInclude Include="SqlProcedure.h" />

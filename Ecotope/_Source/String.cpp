@@ -16,6 +16,7 @@ wstring UString::ToWideString(const string& sInput, bool bAppended)
             wchar_t wcsBuffer[N_BUFFER_SIZE+1] = {0};
 
             size_t nConvertedCharacters = mbstowcs(wcsBuffer, sInput.c_str() + Offerset, N_BUFFER_SIZE);
+
             if(nConvertedCharacters == -1)
             {
                 return WS_BLANK;
@@ -32,9 +33,9 @@ wstring UString::ToWideString(const string& sInput, bool bAppended)
     return sOutput;
 }
 
-string UString::TrimLeftBlank(MSTRING& sInput)
+mstring UString::TrimLeftBlank(MSTRING& sInput)
 {
-    string sReturn;
+    mstring sResult;
     size_t nLength = sInput.length();
 
     if(0 != nLength)
@@ -43,19 +44,40 @@ string UString::TrimLeftBlank(MSTRING& sInput)
         {
             if(sInput[i] != ' ' && sInput[i] != '\t' && sInput[i] != '\r' && sInput[i] != '\n')
             {
-                sReturn = sInput.substr(i);
+                sResult = sInput.substr(i);
 
                 break;
             }
         }
     }
 
-    return move(sReturn);
+    return move(sResult);
 }
 
-string UString::TrimRightBlank(MSTRING& sInput)
+wstring UString::TrimLeftBlank(WSTRING& sInput)
 {
-    string sReturn;
+    wstring sResult;
+    size_t nLength = sInput.length();
+
+    if(0 != nLength)
+    {
+        for(size_t i = 0; i < sInput.length(); i++)
+        {
+            if(sInput[i] != L' ' && sInput[i] != L'\t' && sInput[i] != L'\r' && sInput[i] != L'\n')
+            {
+                sResult = sInput.substr(i);
+
+                break;
+            }
+        }
+    }
+
+    return move(sResult);
+}
+
+mstring UString::TrimRightBlank(MSTRING& sInput)
+{
+    mstring sReturn;
     size_t nLength = sInput.length();
 
     if(0 != nLength)
@@ -74,18 +96,45 @@ string UString::TrimRightBlank(MSTRING& sInput)
     return move(sReturn);
 }
 
-string UString::TrimBlank(MSTRING& sInput)
+
+wstring UString::TrimRightBlank(WSTRING& sInput)
+{
+    wstring sResult;
+    size_t nLength = sInput.length();
+
+    if(0 != nLength)
+    {
+        for(size_t i = nLength-1; i >= 0; i--)
+        {
+            if(sInput[i] != L' ' && sInput[i] != L'\t' && sInput[i] != L'\r' && sInput[i] != L'\n')
+            {
+                sResult = sInput.substr(0, i+1);
+
+                break;
+            }
+        }
+    }
+
+    return move(sResult);
+}
+
+mstring UString::TrimBlank(MSTRING& sInput)
 {
     return TrimRightBlank(TrimLeftBlank(sInput));
 }
 
-vector<string> UString::Split(MSTRING& sInput, char cSeparator)
+wstring UString::TrimBlank(WSTRING& sInput)
 {
-    string sOpertion(sInput);
-    vector<string> stlStrings;
+    return TrimRightBlank(TrimLeftBlank(sInput));
+}
+
+vector<mstring> UString::Split(MSTRING& sInput, char tSeparator)
+{
+    mstring sOpertion(sInput);
+    vector<mstring> stlStrings;
     size_t nIndex;
 
-    while((nIndex = sOpertion.find(cSeparator)) != -1)
+    while((nIndex = sOpertion.find(tSeparator)) != -1)
     {
         stlStrings.push_back(sOpertion.substr(0, nIndex));
 
@@ -98,4 +147,61 @@ vector<string> UString::Split(MSTRING& sInput, char cSeparator)
     }
 
     return move(stlStrings);
+}
+
+vector<wstring> UString::Split(WSTRING& sInput, wchar_t tSeparator)
+{
+    wstring sOpertion(sInput);
+    vector<wstring> stlStrings;
+    size_t nIndex;
+
+    while((nIndex = sOpertion.find(tSeparator)) != -1)
+    {
+        stlStrings.push_back(sOpertion.substr(0, nIndex));
+
+        sOpertion = sOpertion.substr(nIndex+1, sOpertion.length());
+    }
+
+    if(sOpertion.length() > 0)
+    {
+        stlStrings.push_back(sOpertion);
+    }
+
+    return move(stlStrings);
+}
+
+mstring UString::ToLower(MSTRING& sInput)
+{
+    mstring sResult = sInput;
+
+    transform(sResult.begin(), sResult.end(), sResult.begin(), tolower);
+
+    return move(sResult);
+}
+
+wstring UString::ToLower(WSTRING& sInput)
+{
+    wstring sResult = sInput;
+
+    transform(sResult.begin(), sResult.end(), sResult.begin(), tolower);
+
+    return move(sResult);
+}
+
+mstring UString::ToUpper(MSTRING& sInput)
+{
+    mstring sResult = sInput;
+
+    transform(sResult.begin(), sResult.end(), sResult.begin(), toupper);
+
+    return move(sResult);
+}
+
+wstring UString::ToUpper(WSTRING& sInput)
+{
+    wstring sResult = sInput;
+
+    transform(sResult.begin(), sResult.end(), sResult.begin(), toupper);
+
+    return move(sResult);
 }

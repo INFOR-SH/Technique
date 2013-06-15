@@ -1,5 +1,5 @@
 %{
-#include "../MssqlDriver.h"
+#include "../MssqlCapturer.h"
 #include "../MssqlScanner.h"
 #include "../SqlVariable.h"
 #include "Technique/Ecotope/String.h"
@@ -37,6 +37,7 @@ ROperatorBlank      [ \t\r\n]*
 RMethodName     ([_a-zA-Z\[-\]]+"."{1}[_a-zA-Z0-9\[-\]]+)|[_a-zA-Z0-9\[-\]]+
 RVariableName   "@"[_a-zA-Z0-9]+
 RVariableType   [_a-zA-z0-9]+
+RVariableSubtype [0-9\,]+
 RVariableValue  "NULL"|"@"[_a-zA-Z0-9]+|"N"?\'{1}.*\'{1}|[0-9\.]+
 %%
 
@@ -44,7 +45,6 @@ RVariableValue  "NULL"|"@"[_a-zA-Z0-9]+|"N"?\'{1}.*\'{1}|[0-9\.]+
     m_nEndingCommentLine = yylineno;
 
     BEGIN m_nLastStatus;
-    
 }
 
 <M_COMMENT2>\n {
@@ -87,12 +87,12 @@ RVariableValue  "NULL"|"@"[_a-zA-Z0-9]+|"N"?\'{1}.*\'{1}|[0-9\.]+
 }
 
 <M_PROCEDURE_DECLARATION_END>"AS" {
-    m_oDeclaration.AddParameter(m_oVariable);
+    m_oDeclaration.AppendParameter(m_oVariable);
     m_oDeclaration.EndingLine(yylineno);
 
     m_oVariable.Clear();
 
-    oDriver.Declaration(m_oDeclaration);
+    pCapturer->CaptureDeclaration(m_oDeclaration);
     
     m_eStage = E_STAGE_BODY;
 
@@ -119,9 +119,10 @@ RVariableValue  "NULL"|"@"[_a-zA-Z0-9]+|"N"?\'{1}.*\'{1}|[0-9\.]+
     m_oVariable.EndingLine(yylineno);
 }
 
-<M_DECLARE_VARIABLES>{RVariableType}|({RVariableType}{ROperatorBlank}"("{ROperatorBlank}{RInteger}{ROperatorBlank}")") {
+<M_DECLARE_VARIABLES>{RVariableType}|({RVariableType}{ROperatorBlank}"("{ROperatorBlank}{RVariableSubtype}{ROperatorBlank}")") {
     string sType;
-    auto aStrings = UString::Split(yytext, '(');
+    //auto aStrings = UString::Split(yytext, '(');
+    auto aStrings = CMStringHelper(yytext).Split('(');
 
     if(aStrings.size() == 1)
     {
@@ -129,10 +130,12 @@ RVariableValue  "NULL"|"@"[_a-zA-Z0-9]+|"N"?\'{1}.*\'{1}|[0-9\.]+
     }
     else
     {
-        sType = UString::TrimBlank(aStrings[0]);
+        //sType = UString::TrimBlank(aStrings[0]);
+        sType = CMStringHelper(aStrings[0]).TrimBlank();
         
         sType.append("(");
-        sType.append(UString::TrimBlank(aStrings[1].substr(0, aStrings[1].length()-1)));
+        //sType.append(UString::TrimBlank(aStrings[1].substr(0, aStrings[1].length()-1)));
+        sType.append(CMStringHelper(aStrings[1].substr(0, aStrings[1].length()-1)).TrimBlank());
         sType.append(")");
     }
 
@@ -144,7 +147,8 @@ RVariableValue  "NULL"|"@"[_a-zA-Z0-9]+|"N"?\'{1}.*\'{1}|[0-9\.]+
     string sValue(yytext);
     
     sValue = sValue.substr(1);
-    m_oVariable.Value(UString::TrimBlank(sValue));
+    //m_oVariable.Value(UString::TrimBlank(sValue));
+    m_oVariable.Value(CMStringHelper(sValue).TrimBlank());
     m_oVariable.EndingLine(yylineno);
 }
 
@@ -154,7 +158,7 @@ RVariableValue  "NULL"|"@"[_a-zA-Z0-9]+|"N"?\'{1}.*\'{1}|[0-9\.]+
 }
 
 <M_DECLARE_VARIABLES>"," {
-    m_oDeclaration.AddParameter(m_oVariable);
+    m_oDeclaration.AppendParameter(m_oVariable);
     m_oVariable.Clear();
 }
 
@@ -180,16 +184,20 @@ RVariableValue  "NULL"|"@"[_a-zA-Z0-9]+|"N"?\'{1}.*\'{1}|[0-9\.]+
 }
 
 <M_PROCEDURE>({RMethodName})|({RVariableName})|({RVariableName}{ROperatorBlank}"="{1}{ROperatorBlank}({RVariableName}|{RString})) {
-    auto aStrings = UString::Split(yytext, '=');
+    //auto aStrings = UString::Split(yytext, '=');
+    auto aStrings = CMStringHelper(yytext).Split('=');
 
     if(aStrings.size() == 1)
     {
-        m_oProcedure.Name(UString::TrimBlank(yytext));
+        //m_oProcedure.Name(UString::TrimBlank(yytext));
+        m_oProcedure.Name(CMStringHelper(yytext).TrimBlank());
     }
     else
     {
-        m_oProcedure.Name(UString::TrimBlank(aStrings[1]));
-        m_oProcedure.ReturnVariableName(UString::TrimBlank(aStrings[0]));
+        //m_oProcedure.Name(UString::TrimBlank(aStrings[1]));
+        m_oProcedure.Name(CMStringHelper(aStrings[1]).TrimBlank());
+        //m_oProcedure.ReturnVariableName(UString::TrimBlank(aStrings[0]));
+        m_oProcedure.ReturnVariableName(CMStringHelper(aStrings[0]).TrimBlank());
     }
 
     BEGIN M_ARGUMENTS;
@@ -213,16 +221,20 @@ RVariableValue  "NULL"|"@"[_a-zA-Z0-9]+|"N"?\'{1}.*\'{1}|[0-9\.]+
     m_oArgument.StartingLine(yylineno);
     m_oArgument.EndingLine(yylineno);
 
-    auto aStrings = UString::Split(yytext, '=');
+    //auto aStrings = UString::Split(yytext, '=');
+    auto aStrings = CMStringHelper(yytext).Split('=');
 
     if(aStrings.size() == 1)
     {
-        m_oArgument.RightValue(UString::TrimBlank(aStrings[0]));
+        //m_oArgument.RightValue(UString::TrimBlank(aStrings[0]));
+        m_oArgument.RightValue(CMStringHelper(aStrings[0]).TrimBlank());
     }
     else
     {
-        m_oArgument.LeftValue(UString::TrimBlank(aStrings[0]));
-        m_oArgument.RightValue(UString::TrimBlank(aStrings[1]));
+        //m_oArgument.LeftValue(UString::TrimBlank(aStrings[0]));
+        m_oArgument.LeftValue(CMStringHelper(aStrings[0]).TrimBlank());
+        //m_oArgument.RightValue(UString::TrimBlank(aStrings[1]));
+        m_oArgument.RightValue(CMStringHelper(aStrings[1]).TrimBlank());
     }
 }
 
@@ -249,7 +261,7 @@ RVariableValue  "NULL"|"@"[_a-zA-Z0-9]+|"N"?\'{1}.*\'{1}|[0-9\.]+
         m_oProcedure.EndingLine(yylineno);
     }
 
-    oDriver.Procedure(m_oProcedure);
+    pCapturer->CaptureProcedure(m_oProcedure);
 
     m_oArgument.Clear();
     m_oProcedure.Clear();

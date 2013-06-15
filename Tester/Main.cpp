@@ -1,4 +1,4 @@
-#include "Technique/Code/MssqlDriver.h"
+#include "Technique/Code/MssqlCapturer.h"
 #include "Technique/Code/MssqlScanner.h"
 #include "Technique/Code/SqlDeclaration.h"
 #include "Technique/Code/SqlProcedure.h"
@@ -8,9 +8,9 @@
 using namespace SyteLine::Technique;
 using namespace SyteLine::Technique::Code;
 
-//CSqlParameter GetLastParameter(CMssqlDriver& oDriver)
+//CSqlParameter GetLastParameter(CMssqlCapturer& pCapturer)
 //{
-//    auto stlParameters = oDriver.Parameters();
+//    auto stlParameters = pCapturer.Parameters();
 //    size_t nLastLine = 0;
 //    mstring sLastName = "";
 //
@@ -53,16 +53,16 @@ using namespace SyteLine::Technique::Code;
 //    stlOuptuFileStream.close();
 //}
 
-bool Output(const CMssqlDriver& oDriver, mstring sInputFileName, mstring sOutputFileName)
+bool Output(const CMssqlCapturer& pCapturer, mstring sInputFileName, mstring sOutputFileName)
 {
     bool bResult = true;
     string sOldSpName("InitSessionContextSp");
     string sNewSpName("InitSessionContextWithUserSp");
-    auto aSqlFile = oDriver.GetSqlFile();
-    auto aParameters = aSqlFile.Declaration().Parameters();
-    auto aProcedure = aSqlFile.GetProcedure(sOldSpName);
-    auto aLastParameter(aParameters[aParameters.size()-1]);
-    CSqlArgument oLastArgument(aProcedure.QuoteArguments()[aProcedure.QuoteArguments().size()-1]);
+    CSqlFile oSqlFile = pCapturer.GetSqlFile();
+    auto aParameters = oSqlFile.Declaration().Parameters();
+    CSqlProcedure oProcedure = oSqlFile.GetProcedure(sOldSpName);
+    CSqlVariable oLastParameter(aParameters.Last());
+    CSqlArgument oLastArgument(oProcedure.QuoteArguments().Last());
 
     ifstream stlInputFileStream(sInputFileName);
     ofstream stlOuptuFileStream(sOutputFileName, ios::trunc);
@@ -70,12 +70,12 @@ bool Output(const CMssqlDriver& oDriver, mstring sInputFileName, mstring sOutput
     char csBuffer[2048] = {0};
     size_t nReadLine = 1;
     mstring sInsertParameter = "   , @UserId   TokenType   =   NULL\n";
-    mstring sInsertArgument = "   , @UserId = @UserId\n";
+    mstring sInsertArgument = "   , @UserName = @UserId\n";
     int nReplaced = 0;
 
     while(stlInputFileStream.getline(csBuffer,2048))
     {
-        if(nReadLine == aLastParameter.EndingLine())
+        if(nReadLine == oLastParameter.EndingLine())
         {
             mstring sLine(csBuffer);
             size_t nIndex = sLine.find_last_of(")");
@@ -98,7 +98,7 @@ bool Output(const CMssqlDriver& oDriver, mstring sInputFileName, mstring sOutput
                 stlOuptuFileStream.write("\n", strlen("\n"));
             }
         }
-        else if(nReadLine >= aProcedure.StartingLine() && nReadLine <= aProcedure.EndingLine())
+        else if(nReadLine >= oProcedure.StartingLine() && nReadLine <= oProcedure.EndingLine())
         {
             if(nReplaced == 0)
             {
@@ -107,7 +107,7 @@ bool Output(const CMssqlDriver& oDriver, mstring sInputFileName, mstring sOutput
 
                 if(nIndex == -1)
                 {
-                    if(nReadLine== aProcedure.EndingLine())
+                    if(nReadLine== oProcedure.EndingLine())
                     {
                         bResult = false;
                         goto RET;
@@ -179,6 +179,7 @@ bool Output(const CMssqlDriver& oDriver, mstring sInputFileName, mstring sOutput
         memset(csBuffer, 0, sizeof(csBuffer));
         nReadLine++;
     }
+
 RET:
     stlInputFileStream.close();
     stlOuptuFileStream.close();
@@ -191,13 +192,13 @@ void main()
     mstring sInputFileName("D:\\Rpt_1099FormPrintingSp.sp");
     mstring sOutputFileName("D:\\Rpt_1099FormPrintingSp.output.sql");
     ifstream stlInputFileStream(sInputFileName);
-    CMssqlDriver oDriver;
+    CMssqlCapturer pCapturer;
     CMssqlScanner oScanner(&stlInputFileStream);
 
-    oScanner.Flex(oDriver);
+    oScanner.Flex(pCapturer);
 
     stlInputFileStream.close();
 
-    Output(oDriver, sInputFileName, sOutputFileName);
+    Output(pCapturer, sInputFileName, sOutputFileName);
 
 }

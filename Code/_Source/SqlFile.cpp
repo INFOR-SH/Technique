@@ -1,6 +1,8 @@
 #include "../SqlFile.h"
-#include "../SqlProcedure.h"
+#include "../SqlVariable.h"
+#include "Technique/Ecotope/String.h"
 
+using namespace SyteLine::Technique;
 using namespace SyteLine::Technique::Code;
 
 CSqlFile::CSqlFile()
@@ -9,8 +11,7 @@ CSqlFile::CSqlFile()
 
 CSqlFile::CSqlFile(const CSqlFile& oThat)
     :m_oDeclaration(oThat.m_oDeclaration)
-    ,m_stlProcedures(oThat.m_stlProcedures)
-    ,m_stlProcedureIndexs(oThat.m_stlProcedureIndexs)
+    ,m_oProcedures(oThat.m_oProcedures)
 {
 }
 
@@ -27,10 +28,9 @@ void CSqlFile::Declaration(const CSqlDeclaration& oDeclaration)
     m_oDeclaration = oDeclaration;
 }
 
-void CSqlFile::AddProcedure(const CSqlProcedure& oProcedure)
+void CSqlFile::AppendProcedure(const CSqlProcedure& oProcedure)
 {
-    m_stlProcedures.push_back(oProcedure);
-    m_stlProcedureIndexs[oProcedure.Name()] = m_stlProcedures.size() - 1;
+    m_oProcedures.Append(UString::ToLower(oProcedure.Name()), oProcedure);
 }
 
 CSqlDeclaration CSqlFile::Declaration() const
@@ -38,23 +38,19 @@ CSqlDeclaration CSqlFile::Declaration() const
     return m_oDeclaration;
 }
 
-vector<CSqlProcedure> CSqlFile::Procedures() const
+CArray<mstring, CSqlProcedure> CSqlFile::Procedures() const
 {
-    return m_stlProcedures;
+    return m_oProcedures;
 }
 
-CSqlProcedure CSqlFile::GetProcedure(MSTRING& sName) const
+CSqlVariable CSqlFile::QueryParameter(MSTRING& sName) const
 {
-    auto aIndex = m_stlProcedureIndexs.find(sName);
+    return m_oDeclaration.QueryParameter(UString::ToLower(sName));
+}
 
-    if(aIndex != m_stlProcedureIndexs.end())
-    {
-        return move(CSqlProcedure(m_stlProcedures[aIndex->second]));
-    }
-    else
-    {
-        return CSqlProcedure();
-    }
+CSqlProcedure CSqlFile::QueryProcedure(MSTRING& sName) const
+{
+    return m_oProcedures.Query(UString::ToLower(sName));
 }
 
 CSqlDeclaration& CSqlFile::QuoteDeclaration()
@@ -62,16 +58,15 @@ CSqlDeclaration& CSqlFile::QuoteDeclaration()
     return m_oDeclaration;
 }
 
-vector<CSqlProcedure>& CSqlFile::QuoteProcedures()
+CArray<mstring, CSqlProcedure>& CSqlFile::QuoteProcedures()
 {
-    return m_stlProcedures;
+    return m_oProcedures;
 }
 
 const CSqlFile& CSqlFile::operator=(const CSqlFile& oRValue)
 {
     m_oDeclaration = oRValue.m_oDeclaration;
-    m_stlProcedures = oRValue.m_stlProcedures;
-    m_stlProcedureIndexs = oRValue.m_stlProcedureIndexs;
+    m_oProcedures = oRValue.m_oProcedures;
 
     return *this;
 }

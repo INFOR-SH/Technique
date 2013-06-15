@@ -1,21 +1,21 @@
 #ifndef SYTELINE_TECHNIQUE_CODE_SQLPROCEDURE_H
 #define SYTELINE_TECHNIQUE_CODE_SQLPROCEDURE_H
 
-#ifndef SYTELINE_TECHNIQUE_CODE_SQLFIELD_H
-#include "Technique/Code/SqlField.h"
+#ifndef SYTELINE_TECHNIQUE_SYSTEM_ECOTOPE_ARRAY_H
+#include "Technique/Ecotope/Array.h"
+#endif
+#ifndef SYTELINE_TECHNIQUE_CODE_SQLARGUMENT_H
+#include "Technique/Code/SqlArgument.h"
 #endif
 
 namespace SyteLine { namespace Technique { namespace Code
 {
-    class CSqlArgument;
-
     class SYTELINE_LIBRARY_EXPORT CSqlProcedure : public CSqlField
     {
     protected:
         mstring m_sName;
         mstring m_sReturnVariableName;
-        vector<CSqlArgument> m_stlArguments;
-        map<string, size_t> m_stlArgumentIndexs;
+        CArray<mstring, CSqlArgument> m_oArguments;
 
     public:
         CSqlProcedure();
@@ -31,8 +31,8 @@ namespace SyteLine { namespace Technique { namespace Code
         void ReturnVariableName(MSTRING& sReturnVariableName);
 
         void AppendArgument(const CSqlArgument& oArgument);
-        CSqlArgument GetArgument(MSTRING& sName) const;
-        vector<CSqlArgument>& QuoteArguments();
+        CSqlArgument QueryArgument(MSTRING& sName) const;
+        CArray<mstring, CSqlArgument>& QuoteArguments();
 
     public:
         virtual void Clear();

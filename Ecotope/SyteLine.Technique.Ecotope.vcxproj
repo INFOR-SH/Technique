@@ -11,10 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Array.h" />
     <ClInclude Include="Base.h" />
+    <ClInclude Include="Path.h" />
     <ClInclude Include="String.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="_Source\Path.cpp" />
     <ClCompile Include="_Source\String.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
