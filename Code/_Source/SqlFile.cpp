@@ -47,7 +47,6 @@ TCollection<wstring, CSqlProcedure> CSqlFile::Procedures() const
 void CSqlFile::AppendProcedure(const CSqlProcedure& oProcedure)
 {
     m_oProcedures.Append(UString::ToLower(oProcedure.Name()), oProcedure);
-    //m_oProcedures.Append(CWStringHelper(oProcedure.Name()).ToLower(), oProcedure);
 }
 
 TQueried<CSqlVariable> CSqlFile::QueryParameter(WSTRING& sName) const
@@ -62,7 +61,6 @@ TQueried<CSqlProcedure> CSqlFile::QueryProcedure(WSTRING& sName) const
     wstring sKey = UString::ToLower(sName);
 
     return m_oProcedures.Query(sKey);
-    //return m_oProcedures.Query(UString::ToLower(sName));
 }
 
 CSqlDeclaration& CSqlFile::QuoteDeclaration()

@@ -44,7 +44,6 @@ wstring CPath::Path() const
 
 wstring CPath::FileName() const
 {
-    //auto aString = CWStringHelper(m_sPath).Split(L'\\');
     auto aString = UString::Split(m_sPath, L'\\');
 
     return aString[aString.size()-1];
@@ -60,7 +59,6 @@ wstring CPath::Directory() const
     }
     else
     {
-        //auto aString = CWStringHelper(m_sPath).Split(L'\\');
         auto aString = UString::Split(m_sPath, L'\\');
 
         for(int i = 0; i <aString.size() - 1; i++)
