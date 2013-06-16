@@ -14,7 +14,7 @@ namespace SyteLine { namespace Technique { namespace Code
     {
     protected:
         CSqlDeclaration m_oDeclaration;
-        TCollection<wstring, CSqlProcedure> m_oProcedures;
+        CCollection<wstring, CSqlProcedure> m_oProcedures;
 
     public:
         CSqlFile();
@@ -25,15 +25,15 @@ namespace SyteLine { namespace Technique { namespace Code
     public:
         void Declaration(const CSqlDeclaration& oDeclaration);
         CSqlDeclaration Declaration() const;
-        void Procedures(const TCollection<wstring, CSqlProcedure>& oProcedures);
-        TCollection<wstring, CSqlProcedure> Procedures() const;
+        void Procedures(const CCollection<wstring, CSqlProcedure>& oProcedures);
+        CCollection<wstring, CSqlProcedure> Procedures() const;
     public:
         void AppendProcedure(const CSqlProcedure& oProcedure); 
-        TQueried<CSqlVariable> QueryParameter(WSTRING& sName) const;
-        TQueried<CSqlProcedure> QueryProcedure(WSTRING& sName) const;
+        CQueried<CSqlVariable> QueryParameter(WSTRING& sName) const;
+        CQueried<CSqlProcedure> QueryProcedure(WSTRING& sName) const;
     public:
         CSqlDeclaration& QuoteDeclaration();
-        TCollection<wstring, CSqlProcedure>& QuoteProcedures();
+        CCollection<wstring, CSqlProcedure>& QuoteProcedures();
 
     public:
         const CSqlFile& operator=(const CSqlFile& rvalue);

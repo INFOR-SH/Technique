@@ -11,11 +11,12 @@ namespace SyteLine { namespace Technique
     {
     private:
         wstring m_sPath;
+        wchar_t m_cDivision;
 
     public:
         CPath();
-        CPath(WSTRING& sPath);
-        CPath(WSTRING& sDirectory, WSTRING& sFileName);
+        CPath(WSTRING& sPath, wchar_t cDivision=L'\\');
+        CPath(WSTRING& sDirectory, WSTRING& sFileName, wchar_t cDivision=L'\\');
         CPath(const CPath& that);
         CPath(const CPath&& that);
 

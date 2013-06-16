@@ -13,9 +13,14 @@ namespace SyteLine { namespace Technique { namespace Code
     class SYTELINE_LIBRARY_EXPORT CSqlProcedure : public CSqlField
     {
     protected:
+        //Owner and name have not '[' and ']'
+        wstring m_sOwner;
         wstring m_sName;
         wstring m_sReturnVariableName;
-        TCollection<wstring, CSqlArgument> m_oArguments;
+        CCollection<wstring, CSqlArgument> m_oArguments;
+
+    public:
+        static wstring MakeFullName(WSTRING& sName, WSTRING& sOwner=S_BLANK);
 
     public:
         CSqlProcedure();
@@ -24,18 +29,22 @@ namespace SyteLine { namespace Technique { namespace Code
         virtual ~CSqlProcedure();
 
     public:
+        void Owner(WSTRING& sOwner);
+        wstring Owner();
         void Name(WSTRING& sName);
         wstring Name() const;
         void ReturnVariableName(WSTRING& sReturnVariableName);
         wstring ReturnVariableName() const;
-    public:
-        void AppendArgument(const CSqlArgument& oArgument);
-        TQueried<CSqlArgument> QueryArgument(WSTRING& sName) const;
-    public:
-        virtual void Clear();
 
     public:
-        TCollection<wstring, CSqlArgument>& QuoteArguments();
+        virtual void AppendArgument(const CSqlArgument& oArgument);
+        virtual CQueried<CSqlArgument> QueryArgument(WSTRING& sName) const;
+    public:
+        virtual void Clear();
+        virtual wstring ToFullName() const;
+
+    public:
+        CCollection<wstring, CSqlArgument>& QuoteArguments();
 
     public:
         virtual const CSqlProcedure& operator=(const CSqlProcedure& rvalue);

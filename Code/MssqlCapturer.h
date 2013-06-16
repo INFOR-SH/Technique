@@ -33,8 +33,8 @@ namespace SyteLine { namespace Technique { namespace Code
         virtual void CaptureDeclaration(const CSqlDeclaration& oDeclaration);
         virtual void CaptureProcedure(const CSqlProcedure& oProcedure);
         virtual void CaptureVariable(const CSqlVariable& oVariable);
-        virtual TQueried<CSqlVariable> QueryParameter(WSTRING& sName) const;
-        virtual TQueried<CSqlProcedure> QueryProcedure(WSTRING& sName) const;
+        virtual CQueried<CSqlVariable> QueryParameter(WSTRING& sName) const;
+        virtual CQueried<CSqlProcedure> QueryProcedure(WSTRING& sName) const;
 
     public:
         const CSqlFile& QuoteSqlFile() const;

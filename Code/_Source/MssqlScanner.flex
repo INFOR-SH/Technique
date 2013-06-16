@@ -178,15 +178,28 @@ RVariableValue  "NULL"|"@"[_a-zA-Z0-9]+|"N"?\'{1}.*\'{1}|[0-9\.]+
 
 <M_PROCEDURE>({RMethodName})|({RVariableName})|({RVariableName}{ROperatorBlank}"="{1}{ROperatorBlank}({RVariableName}|{RString})) {
     vector<wstring> gStrings = UString::Split(UString::ToWideString(yytext), L'=');
+    wstring sRawName;
 
     if(gStrings.size() == 1)
     {
-        m_oProcedure.Name(UString::TrimBlank(UString::ToWideString(yytext)));
+        sRawName = UString::TrimBlank(UString::ToWideString(yytext));
     }
     else
     {
-        m_oProcedure.Name(UString::TrimBlank(gStrings[1]));
+        sRawName = UString::TrimBlank(gStrings[1]);
         m_oProcedure.ReturnVariableName(UString::TrimBlank(gStrings[0]));
+    }
+
+    int nIndex = sRawName.find(L".");
+
+    if(nIndex == -1)
+    {
+        m_oProcedure.Name(sRawName);
+    }
+    else
+    {
+        m_oProcedure.Owner(UString::TrimBlank(sRawName.substr(0, nIndex)));
+        m_oProcedure.Name(UString::TrimBlank(sRawName.substr(nIndex+1)));
     }
 
     BEGIN M_ARGUMENTS;

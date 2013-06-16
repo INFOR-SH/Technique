@@ -7,17 +7,22 @@ CPath::CPath()
 {
 }
 
-CPath::CPath(WSTRING& sPath)
+CPath::CPath(WSTRING& sPath, wchar_t cDivision)
     :m_sPath(sPath)
+    ,m_cDivision(cDivision)
 {
 }
 
-CPath::CPath(WSTRING& sDirectory, WSTRING& sFileName)
+CPath::CPath(WSTRING& sDirectory, WSTRING& sFileName, wchar_t cDivision)
     :m_sPath(sDirectory)
+    ,m_cDivision(cDivision)
 {
-    if(sDirectory[sDirectory.length()-1] != L'\\')
+    if(sDirectory[sDirectory.length()-1] != m_cDivision)
     {
-        m_sPath.append(L"\\");
+        wchar_t wcsDivision[2] = {0};
+
+        wcsDivision[0] = m_cDivision;
+        m_sPath.append(wcsDivision);
     }
 
     m_sPath.append(sFileName);
@@ -44,7 +49,7 @@ wstring CPath::Path() const
 
 wstring CPath::FileName() const
 {
-    auto aString = UString::Split(m_sPath, L'\\');
+    auto aString = UString::Split(m_sPath, m_cDivision);
 
     return aString[aString.size()-1];
 }
@@ -53,18 +58,21 @@ wstring CPath::Directory() const
 {
     wstring sDirectory;
 
-    if(L'\\' == m_sPath[m_sPath.length()-1])
+    if(m_cDivision == m_sPath[m_sPath.length()-1])
     {
         return m_sPath;
     }
     else
     {
-        auto aString = UString::Split(m_sPath, L'\\');
+        auto aString = UString::Split(m_sPath, m_cDivision);
 
         for(int i = 0; i <aString.size() - 1; i++)
         {
+            wchar_t wcsDivision[2] = {0};
+
+            wcsDivision[0] = m_cDivision;
             sDirectory.append(aString[i]);
-            sDirectory.append(L"\\");
+            sDirectory.append(wcsDivision);
         }
 
         return move(sDirectory);

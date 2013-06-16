@@ -44,12 +44,12 @@ wstring CSqlDeclaration::ReturnType() const
     return m_sReturnType;
 }
 
-void CSqlDeclaration::Parameters(const TCollection<wstring, CSqlVariable>& oParameters)
+void CSqlDeclaration::Parameters(const CCollection<wstring, CSqlVariable>& oParameters)
 {
     m_oParameters = oParameters;
 }
 
-TCollection<wstring, CSqlVariable> CSqlDeclaration::Parameters() const
+CCollection<wstring, CSqlVariable> CSqlDeclaration::Parameters() const
 {
     return m_oParameters;
 }
@@ -59,7 +59,7 @@ void CSqlDeclaration::AppendParameter(const CSqlVariable& oParameter)
     m_oParameters.Append(UString::ToLower(oParameter.Name()), oParameter);
 }
 
-TQueried<CSqlVariable>  CSqlDeclaration::QueryParameter(WSTRING& sName) const
+CQueried<CSqlVariable>  CSqlDeclaration::QueryParameter(WSTRING& sName) const
 {
     return m_oParameters.Query(UString::ToLower(sName));
 }
@@ -69,7 +69,7 @@ wstring CSqlDeclaration::ToString(size_t nTabSize)
     return L"";
 }
 
-TCollection<wstring, CSqlVariable>& CSqlDeclaration::QuoteParameters()
+CCollection<wstring, CSqlVariable>& CSqlDeclaration::QuoteParameters()
 {
     return m_oParameters;
 }

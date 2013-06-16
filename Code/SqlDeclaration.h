@@ -15,7 +15,7 @@ namespace SyteLine { namespace Technique { namespace Code
     protected:
         wstring m_sName;
         wstring m_sReturnType;
-        TCollection<wstring, CSqlVariable> m_oParameters;
+        CCollection<wstring, CSqlVariable> m_oParameters;
 
     public:
         CSqlDeclaration();
@@ -28,14 +28,14 @@ namespace SyteLine { namespace Technique { namespace Code
         wstring Name() const;
         void ReturnType(WSTRING& sReturnType);
         wstring ReturnType() const;
-        void Parameters(const TCollection<wstring, CSqlVariable>& gParameters);
-        TCollection<wstring, CSqlVariable> Parameters() const;
+        void Parameters(const CCollection<wstring, CSqlVariable>& gParameters);
+        CCollection<wstring, CSqlVariable> Parameters() const;
     public:
         void AppendParameter(const CSqlVariable& oParameter);
-        TQueried<CSqlVariable> QueryParameter(WSTRING& sName) const;
+        CQueried<CSqlVariable> QueryParameter(WSTRING& sName) const;
         wstring ToString(size_t nTabSize = 3);
     public:
-        TCollection<wstring, CSqlVariable>& QuoteParameters();
+        CCollection<wstring, CSqlVariable>& QuoteParameters();
 
     public:
         virtual const CSqlDeclaration& operator=(const CSqlDeclaration& rvalue);

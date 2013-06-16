@@ -8,28 +8,34 @@
 namespace SyteLine { namespace Technique
 {
     template<typename TClass>
-    class SYTELINE_LIBRARY_EXPORT TQueried
+    class SYTELINE_LIBRARY_EXPORT CQueried
     {
     protected:
         vector<TClass> m_gArray;
 
     public:
-        TQueried()
+        CQueried()
         {
         }
 
-        TQueried(const TQueried& that)
+        CQueried(const CQueried& that)
             :m_gArray(that.m_gArray)
         {
         }
 
-        TQueried(const TQueried&& that)
+        CQueried(const CQueried&& that)
         {
             *this = move(that);
         }
 
-        virtual ~TQueried()
+        virtual ~CQueried()
         {
+        }
+
+    public:
+        vector<TClass> Array() const
+        {
+            return m_gArray;
         }
 
     public:
@@ -69,7 +75,7 @@ namespace SyteLine { namespace Technique
         }
 
     public:
-        virtual const TQueried& operator=(const TQueried& rvalue)
+        virtual const CQueried& operator=(const CQueried& rvalue)
         {
             m_gArray = rvalue.m_gArray;
 
@@ -83,7 +89,7 @@ namespace SyteLine { namespace Technique
     };
 
     template<typename TKey, typename TClass>
-    class SYTELINE_LIBRARY_EXPORT TCollection
+    class SYTELINE_LIBRARY_EXPORT CCollection
     {
     protected:
         vector<TClass> m_gCollection;
@@ -91,23 +97,23 @@ namespace SyteLine { namespace Technique
         map<TKey, vector<size_t>> m_gCollision;
 
     public:
-        TCollection()
+        CCollection()
         {
         }
 
-        TCollection(const TCollection& that)
+        CCollection(const CCollection& that)
             :m_gCollection(that.m_gCollection)
             ,m_gMapping(that.m_gMapping)
             ,m_gCollision(that.m_gCollision)
         {
         }
 
-        TCollection(const TCollection&& that)
+        CCollection(const CCollection&& that)
         {
             *this = move(that);
         }
 
-        virtual ~TCollection()
+        virtual ~CCollection()
         {
         }
 
@@ -121,13 +127,13 @@ namespace SyteLine { namespace Technique
             m_gMapping[tKey] = nSubscript;
         }
 
-        TQueried<TClass> Query(const TKey& tKey) const
+        CQueried<TClass> Query(const TKey& tKey) const
         {
             auto aCollision = m_gCollision.find(tKey);
 
             if(aCollision != m_gCollision.end())
             {
-                TQueried<TClass> gResults;
+                CQueried<TClass> gResults;
 
                 auto aVector = aCollision->second;
 
@@ -140,7 +146,7 @@ namespace SyteLine { namespace Technique
             }
             else
             {
-                return move(TQueried<TClass>());
+                return move(CQueried<TClass>());
             }
         }
 
@@ -161,7 +167,7 @@ namespace SyteLine { namespace Technique
         }
 
     public:
-        virtual const TCollection& operator=(const TCollection& rvalue)
+        virtual const CCollection& operator=(const CCollection& rvalue)
         {
             m_gCollection = rvalue.m_gCollection;
             m_gMapping = rvalue.m_gMapping;
@@ -170,7 +176,7 @@ namespace SyteLine { namespace Technique
             return *this;
         }
 
-        TQueried<TClass> operator[](const TKey& tKey)
+        CQueried<TClass> operator[](const TKey& tKey)
         {
             return Query(tKey);
         }

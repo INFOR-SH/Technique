@@ -31,12 +31,12 @@ void CMssqlCapturer::CaptureProcedure(const CSqlProcedure& oProcedure)
     m_oSqlFile.AppendProcedure(oProcedure);
 }
 
-TQueried<CSqlVariable> CMssqlCapturer::QueryParameter(WSTRING& sName) const
+CQueried<CSqlVariable> CMssqlCapturer::QueryParameter(WSTRING& sName) const
 {
     return m_oSqlFile.QueryParameter(sName);
 }
 
-TQueried<CSqlProcedure> CMssqlCapturer::QueryProcedure(WSTRING& sName) const
+CQueried<CSqlProcedure> CMssqlCapturer::QueryProcedure(WSTRING& sName) const
 {
     return m_oSqlFile.QueryProcedure(sName);
 }

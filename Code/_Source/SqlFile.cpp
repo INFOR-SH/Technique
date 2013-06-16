@@ -34,33 +34,35 @@ CSqlDeclaration CSqlFile::Declaration() const
     return m_oDeclaration;
 }
 
-void CSqlFile::Procedures(const TCollection<wstring, CSqlProcedure>& oProcedures)
+void CSqlFile::Procedures(const CCollection<wstring, CSqlProcedure>& oProcedures)
 {
     m_oProcedures = oProcedures;
 }
 
-TCollection<wstring, CSqlProcedure> CSqlFile::Procedures() const
+CCollection<wstring, CSqlProcedure> CSqlFile::Procedures() const
 {
     return m_oProcedures;
 }
 
 void CSqlFile::AppendProcedure(const CSqlProcedure& oProcedure)
 {
-    m_oProcedures.Append(UString::ToLower(oProcedure.Name()), oProcedure);
+    wstring sKey = UString::ToLower(oProcedure.ToFullName());
+
+    m_oProcedures.Append(sKey, oProcedure);
 }
 
-TQueried<CSqlVariable> CSqlFile::QueryParameter(WSTRING& sName) const
+CQueried<CSqlVariable> CSqlFile::QueryParameter(WSTRING& sName) const
 {
     wstring sKey = UString::ToLower(sName);
 
     return m_oDeclaration.QueryParameter(sKey);
 }
 
-TQueried<CSqlProcedure> CSqlFile::QueryProcedure(WSTRING& sName) const
+CQueried<CSqlProcedure> CSqlFile::QueryProcedure(WSTRING& sName) const
 {
     wstring sKey = UString::ToLower(sName);
 
-    return m_oProcedures.Query(sKey);
+    return m_oProcedures.Query(CSqlProcedure::MakeFullName(sKey));
 }
 
 CSqlDeclaration& CSqlFile::QuoteDeclaration()
@@ -68,7 +70,7 @@ CSqlDeclaration& CSqlFile::QuoteDeclaration()
     return m_oDeclaration;
 }
 
-TCollection<wstring, CSqlProcedure>& CSqlFile::QuoteProcedures()
+CCollection<wstring, CSqlProcedure>& CSqlFile::QuoteProcedures()
 {
     return m_oProcedures;
 }

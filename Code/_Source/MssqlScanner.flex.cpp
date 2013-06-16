@@ -877,7 +877,7 @@ static yyconst short int yy_rule_linenum[29] =
     {   0,
        41,   47,   53,   60,   67,   74,   78,   82,   86,   99,
       106,  113,  119,  140,  148,  153,  158,  169,  173,  179,
-      195,  202,  209,  226,  232,  237,  257,  261
+      210,  217,  224,  241,  247,  252,  272,  276
     } ;
 
 #define YY_TRAILING_MASK 0x2000
@@ -1379,15 +1379,30 @@ YY_RULE_SETUP
 #line 179 "MssqlScanner.flex"
 {
     vector<wstring> gStrings = UString::Split(UString::ToWideString(yytext), L'=');
+    wstring sRawName;
 
     if(gStrings.size() == 1)
     {
-        m_oProcedure.Name(UString::TrimBlank(UString::ToWideString(yytext)));
+        sRawName = UString::TrimBlank(UString::ToWideString(yytext));
+        //m_oProcedure.Name();
     }
     else
     {
-        m_oProcedure.Name(UString::TrimBlank(gStrings[1]));
+        sRawName = UString::TrimBlank(gStrings[1]);
+        //m_oProcedure.Name();
         m_oProcedure.ReturnVariableName(UString::TrimBlank(gStrings[0]));
+    }
+
+    int nIndex = sRawName.find(L".");
+
+    if(nIndex == -1)
+    {
+        m_oProcedure.Name(sRawName);
+    }
+    else
+    {
+        m_oProcedure.Owner(UString::TrimBlank(sRawName.substr(0, nIndex)));
+        m_oProcedure.Name(UString::TrimBlank(sRawName.substr(nIndex+1)));
     }
 
     BEGIN M_ARGUMENTS;
@@ -1395,7 +1410,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 195 "MssqlScanner.flex"
+#line 210 "MssqlScanner.flex"
 {
     m_nLastStatus = M_ARGUMENTS;
     m_nStartingCommentLine = yylineno;
@@ -1405,7 +1420,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 202 "MssqlScanner.flex"
+#line 217 "MssqlScanner.flex"
 {
     m_nLastStatus = M_ARGUMENTS;
     m_nStartingCommentLine = yylineno;
@@ -1415,7 +1430,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 209 "MssqlScanner.flex"
+#line 224 "MssqlScanner.flex"
 {
     m_oArgument.StartingLine(yylineno);
     m_oArgument.EndingLine(yylineno);
@@ -1435,7 +1450,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 226 "MssqlScanner.flex"
+#line 241 "MssqlScanner.flex"
 {
     m_oProcedure.AppendArgument(m_oArgument);
     m_oProcedure.EndingLine(yylineno);
@@ -1444,7 +1459,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 232 "MssqlScanner.flex"
+#line 247 "MssqlScanner.flex"
 {
     m_oArgument.EndingLine(yylineno);
     m_oArgument.Output(true);
@@ -1452,7 +1467,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 237 "MssqlScanner.flex"
+#line 252 "MssqlScanner.flex"
 {
     m_oProcedure.AppendArgument(m_oArgument);
     
@@ -1475,24 +1490,24 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 257 "MssqlScanner.flex"
+#line 272 "MssqlScanner.flex"
 {
     ;
 }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 261 "MssqlScanner.flex"
+#line 276 "MssqlScanner.flex"
 {
     ;
 }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 264 "MssqlScanner.flex"
+#line 279 "MssqlScanner.flex"
 ECHO;
 	YY_BREAK
-#line 1495 "MssqlScanner.flex.out"
+#line 1510 "MssqlScanner.flex.out"
 			case YY_STATE_EOF(INITIAL):
 			case YY_STATE_EOF(M_COMMENT1):
 			case YY_STATE_EOF(M_COMMENT2):
@@ -2306,7 +2321,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 264 "MssqlScanner.flex"
+#line 279 "MssqlScanner.flex"
 
 
 namespace SyteLine { namespace Technique { namespace Code
